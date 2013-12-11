@@ -17,7 +17,8 @@ REPOS="
 	buildbot
 	"
 
-function die() {
+die()
+{
 	echo "$1"
 	exit 1
 }
