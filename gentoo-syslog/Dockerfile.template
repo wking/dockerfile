@@ -1,0 +1,9 @@
+FROM NAMESPACE/gentoo-en-us:TAG
+MAINTAINER A. U. Thor <author@example.com>
+#VOLUME ["PORTAGE:/usr/portage:ro", "PORTAGE/distfiles:/usr/portage/distfiles:rw"]
+RUN emerge -v sys-process/vixie-cron app-admin/syslog-ng app-admin/logrotate
+RUN rc-update add syslog-ng default
+RUN rc-update add vixie-cron default
+
+# Disable logging to tty12
+RUN sed -i 's/\([^#].*console_all.*\)/#\1/' /etc/syslog-ng/syslog-ng.conf

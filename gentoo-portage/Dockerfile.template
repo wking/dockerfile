@@ -1,0 +1,8 @@
+FROM NAMESPACE/gentoo:TAG
+MAINTAINER A. U. Thor <author@example.com>
+RUN echo 'GENTOO_MIRRORS="http://mirror.mcs.anl.gov/pub/gentoo/"' >> /etc/portage/make.conf
+#RUN echo 'SYNC="rsync://rsync.us.gentoo.org"' >> /etc/portage/make.conf
+RUN mkdir -p /usr/portage
+RUN emerge-webrsync
+RUN emerge --sync --quiet
+RUN eselect news read new

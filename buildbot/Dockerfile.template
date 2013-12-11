@@ -1,0 +1,24 @@
+FROM NAMESPACE/gentoo-syslog:TAG
+MAINTAINER A. U. Thor <author@example.com>
+#VOLUME ["PORTAGE:/usr/portage:ro", "PORTAGE/distfiles:/usr/portage/distfiles:rw"]
+RUN echo 'USE="${USE} sqlite"' >> /etc/portage/make.conf
+RUN echo 'PYTHON_TARGETS="python2_7 python3_3"' >> /etc/portage/make.conf
+RUN echo 'PYTHON_SINGLE_TARGET="python3_3"' >> /etc/portage/make.conf
+RUN echo 'USE_PYTHON="2.7 3.3"' >> /etc/portage/make.conf
+RUN emerge -v1 --newuse dev-lang/python:2.7 dev-lang/python:3.3
+RUN emerge -v dev-util/buildbot dev-util/buildbot-slave
+RUN eselect news read new
+RUN rc-update add buildmaster default
+RUN rc-update add buildslave default
+
+# Container networking happens automatically
+RUN sed -i 's/need net$/use net/' /etc/init.d/*
+
+RUN buildbot create-master /var/lib/buildmaster
+RUN mv /var/lib/buildmaster/master.cfg.sample /var/lib/buildmaster/master.cfg
+RUN buildslave create-slave /var/lib/buildslave localhost:9989 example-slave pass
+RUN chown -R buildbot:buildbot /var/lib/buildmaster /var/lib/buildslave
+
+CMD rc default && tail -F /var/log/messages
+EXPOSE 8010
+EXPOSE 9989
