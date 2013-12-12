@@ -1,4 +1,6 @@
 #!/bin/sh
+#
+# Copyright
 
 AUTHOR="${AUTHOR:-W. Trevor King <wking@tremily.us>}"
 NAMESPACE="${NAMESPACE:-wking}"

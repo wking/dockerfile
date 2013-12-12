@@ -1,3 +1,5 @@
+# Copyright
+
 FROM NAMESPACE/gentoo-portage:TAG
 MAINTAINER A. U. Thor <author@example.com>
 #VOLUME ["PORTAGE:/usr/portage:ro", "PORTAGE/distfiles:/usr/portage/distfiles:rw"]

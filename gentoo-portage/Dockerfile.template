@@ -1,3 +1,5 @@
+# Copyright
+
 FROM NAMESPACE/gentoo:TAG
 MAINTAINER A. U. Thor <author@example.com>
 RUN sed -i 's/#rc_sys=""/rc_sys="lxc"/g' /etc/rc.conf
