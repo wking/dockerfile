@@ -19,7 +19,8 @@ The dependency graph is:
     `-- gentoo-portage  (adds portage directory)
         `-- gentoo-en-us  (adds locale)
             `-- gentoo-syslog  (adds syslog-ng and associates)
-                `-- buildbot  (adds a Buildbot master and slave)
+                |-- buildbot  (adds a Buildbot master and slave)
+                `-- redis  (adds Redis)
 
 Run:
 

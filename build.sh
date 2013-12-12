@@ -39,6 +39,7 @@ REPOS="
 	gentoo-en-us
 	gentoo-syslog
 	buildbot
+	redis
 	"
 
 die()
