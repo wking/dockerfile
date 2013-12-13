@@ -26,15 +26,18 @@
 
 AUTHOR="${AUTHOR:-W. Trevor King <wking@tremily.us>}"
 NAMESPACE="${NAMESPACE:-wking}"
-#PORTAGE="${PORTAGE:-/usr/portage}"
 DATE="${DATE:-20131212}"
 MIRROR="${MIRROR:-http://mirror.mcs.anl.gov/pub/gentoo/}"
-ARCH_URL="${ARCH_URL:-${MIRROR}/releases/amd64/current-stage3/}"
+ARCH_URL="${ARCH_URL:-${MIRROR}releases/amd64/current-stage3/}"
 STAGE3="${STAGE3:-stage3-amd64-${DATE}.tar.bz2}"
 STAGE3_CONTENTS="${STAGE3_CONTENTS:-${STAGE3}.CONTENTS}"
 STAGE3_DIGESTS="${STAGE3_DIGESTS:-${STAGE3}.DIGESTS.asc}"
+PORTAGE_URL="${PORTAGE_URL:-${MIRROR}snapshots/}"
+PORTAGE="${PORTAGE:-portage-${DATE}.tar.xz}"
+PORTAGE_SIG="${PORTAGE_SIG:-${PORTAGE}.gpgsig}"
 
-REPOS="
+REPOS="${REPOS:-
+	portage
 	gentoo-portage
 	gentoo-en-us
 	gentoo-syslog
@@ -43,7 +46,7 @@ REPOS="
 	elasticsearch
 	postgresql
 	redis
-	"
+	}"
 
 die()
 {
@@ -58,7 +61,7 @@ if [ -z "${STAGE3_MATCHES}" ]; then
 
 	for FILE in "${STAGE3}" "${STAGE3_CONTENTS}" "${STAGE3_DIGESTS}"; do
 		if [ ! -f "downloads/${FILE}" ]; then
-			wget -O "downloads/${FILE}" "${ARCH_URL}/${FILE}"
+			wget -O "downloads/${FILE}" "${ARCH_URL}${FILE}"
 		fi
 	done
 
@@ -74,6 +77,30 @@ if [ -z "${STAGE3_MATCHES}" ]; then
 fi
 
 docker tag -f "${NAMESPACE}/gentoo:${DATE}" "${NAMESPACE}/gentoo:latest" || die "failed to tag"
+
+PORTAGE_IMAGES=$(docker images "${NAMESPACE}/portage-import")
+PORTAGE_MATCHES=$(echo "${PORTAGE_IMAGES}" | grep "${DATE}")
+if [ -z "${PORTAGE_MATCHES}" ]; then
+	# import portage image from Gentoo mirrors
+
+	for FILE in "${PORTAGE}" "${PORTAGE_SIG}"; do
+		if [ ! -f "downloads/${FILE}" ]; then
+			wget -O "downloads/${FILE}" "${PORTAGE_URL}${FILE}"
+		fi
+	done
+
+	gpg --verify "downloads/${PORTAGE_SIG}" "downloads/${PORTAGE}" || die "insecure digests"
+
+	docker import - "${NAMESPACE}/portage-import:${DATE}" < "downloads/${PORTAGE}" || die "failed to import"
+fi
+
+docker tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" || die "failed to tag"
+
+# extract Busybox for the portage image
+THIS_DIR=$(dirname $(realpath $0))
+CONTAINER="${NAMESPACE}-gentoo-${DATE}-extract-busybox"
+docker run -name "${CONTAINER}" -v "${THIS_DIR}/portage/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
+docker rm "${CONTAINER}"
 
 for REPO in ${REPOS}; do
 	REPO_IMAGES=$(docker images "${NAMESPACE}/${REPO}")
