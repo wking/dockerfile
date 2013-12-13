@@ -38,6 +38,7 @@ REPOS="
 	gentoo-portage
 	gentoo-en-us
 	gentoo-syslog
+	gentoo-java
 	buildbot
 	postgresql
 	redis
