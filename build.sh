@@ -40,6 +40,7 @@ REPOS="
 	gentoo-syslog
 	gentoo-java
 	buildbot
+	elasticsearch
 	postgresql
 	redis
 	"

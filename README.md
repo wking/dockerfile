@@ -23,6 +23,7 @@ The dependency graph is:
                 |-- postgresql  (adds PostgreSQL)
                 |-- redis  (adds Redis)
                 `-- gentoo-java  (adds IcedTea)
+                    `-- elasticsearch  (adds Elasticsearch)
 
 Run:
 
