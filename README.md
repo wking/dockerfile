@@ -20,6 +20,7 @@ The dependency graph is:
         `-- gentoo-en-us  (adds locale)
             `-- gentoo-syslog  (adds syslog-ng and associates)
                 |-- buildbot  (adds a Buildbot master and slave)
+                |-- postgresql  (adds PostgreSQL)
                 `-- redis  (adds Redis)
 
 Run:

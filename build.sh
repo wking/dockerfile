@@ -39,6 +39,7 @@ REPOS="
 	gentoo-en-us
 	gentoo-syslog
 	buildbot
+	postgresql
 	redis
 	"
 
