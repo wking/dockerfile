@@ -46,5 +46,22 @@ You can also access it from unlinked containers:
 Basically, anyone with access to the `docker0` bridge has access to
 the client's port.
 
+If you're going to be loading a large database ([devicemapper only
+supports 16GB][devicemapper-size-limit]), you may want to
+[volume-mount] the database.  Grab the configured stuff we'll want to
+mount:
+
+    # docker run -d -name postgresql-0 wking/postgresql
+    # docker cp postgresql-0:/var/lib/postgresql/ /var/lib/
+    # mv /var/lib/postgresql/ /var/lib/postgresql-0
+    # docker kill postgresql-0
+    # docker rm postgresql-0
+
+And run future containers with:
+
+    $ docker run -d -name postgresql-0 -v /var/lib/postgresql-0:/var/lib/postgresql wking/postgresql
+
 [PostgreSQL]: http://postgresql.io/
 [linking]: http://docs.docker.io/en/latest/use/port_redirection/#linking-a-container
+[devicemapper-size-limit]: https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt
+[volume-mount]: http://docs.docker.io/en/latest/use/working_with_volumes/#mount-a-host-directory-as-a-container-volume
