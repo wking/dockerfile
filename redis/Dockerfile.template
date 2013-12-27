@@ -29,6 +29,9 @@ RUN emerge -v dev-db/redis
 RUN eselect news read new
 RUN rc-update add redis default
 
+# Bind to all interfaces
+RUN sed -i 's/bind /#bind /' /etc/redis.conf
+
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
