@@ -54,6 +54,16 @@ die()
 	exit 1
 }
 
+REALPATH="${REALPATH:-$(command -v realpath)}"
+if [ -z "${REALPATH}" ]; then
+	READLINK="${READLINK:-$(command -v readlink)}"
+	if [ -n "${READLINK}" ]; then
+		REALPATH="${READLINK} -f"
+	else
+		die "need realpath or readlink to canonicalize paths"
+	fi
+fi
+
 STAGE3_IMAGES=$(docker images "${NAMESPACE}/gentoo")
 STAGE3_MATCHES=$(echo "${STAGE3_IMAGES}" | grep "${DATE}")
 if [ -z "${STAGE3_MATCHES}" ]; then
@@ -97,7 +107,7 @@ fi
 docker tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" || die "failed to tag"
 
 # extract Busybox for the portage image
-THIS_DIR=$(dirname $(realpath $0))
+THIS_DIR=$(dirname $($REALPATH $0))
 CONTAINER="${NAMESPACE}-gentoo-${DATE}-extract-busybox"
 docker run -name "${CONTAINER}" -v "${THIS_DIR}/portage/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
 docker rm "${CONTAINER}"
