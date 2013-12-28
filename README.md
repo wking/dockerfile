@@ -20,6 +20,7 @@ The dependency graph is:
         `-- gentoo-en-us  (adds locale)
             `-- gentoo-syslog  (adds syslog-ng and associates)
                 |-- buildbot  (adds a Buildbot master and slave)
+                |-- memcached  (adds Memcached)
                 |-- nginx  (adds Nginx)
                 |   `-- kibana  (adds Kibana)
                 |-- postgresql  (adds PostgreSQL)

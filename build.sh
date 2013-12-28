@@ -44,6 +44,7 @@ REPOS="${REPOS:-
 	gentoo-java
 	buildbot
 	elasticsearch
+	memcached
 	nginx
 	kibana
 	postgresql
