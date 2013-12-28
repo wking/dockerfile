@@ -21,6 +21,7 @@ The dependency graph is:
             `-- gentoo-syslog  (adds syslog-ng and associates)
                 |-- buildbot  (adds a Buildbot master and slave)
                 |-- nginx  (adds Nginx)
+                |   `-- kibana  (adds Kibana)
                 |-- postgresql  (adds PostgreSQL)
                 |-- redis  (adds Redis)
                 |-- stunnel  (adds stunnel)

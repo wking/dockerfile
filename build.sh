@@ -45,6 +45,7 @@ REPOS="${REPOS:-
 	buildbot
 	elasticsearch
 	nginx
+	kibana
 	postgresql
 	redis
 	stunnel
