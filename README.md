@@ -20,6 +20,7 @@ The dependency graph is:
         `-- gentoo-en-us  (adds locale)
             `-- gentoo-syslog  (adds syslog-ng and associates)
                 |-- buildbot  (adds a Buildbot master and slave)
+                |-- nginx  (adds Nginx)
                 |-- postgresql  (adds PostgreSQL)
                 |-- redis  (adds Redis)
                 |-- stunnel  (adds stunnel)

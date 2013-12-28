@@ -44,6 +44,7 @@ REPOS="${REPOS:-
 	gentoo-java
 	buildbot
 	elasticsearch
+	nginx
 	postgresql
 	redis
 	stunnel
