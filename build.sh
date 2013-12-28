@@ -120,10 +120,16 @@ for REPO in ${REPOS}; do
 	REPO_IMAGES=$(docker images "${NAMESPACE}/${REPO}")
 	REPO_MATCHES=$(echo "${REPO_IMAGES}" | grep "${DATE}")
 	if [ -z "${REPO_MATCHES}" ]; then
-		cp "${REPO}/Dockerfile.template" "${REPO}/Dockerfile"
-		sed -i "s|TAG|${DATE}|g" "${REPO}/Dockerfile"
-		sed -i "s|NAMESPACE|${NAMESPACE}|g" "${REPO}/Dockerfile"
-		sed -i "s|MAINTAINER.*|MAINTAINER ${AUTHOR}|g" "${REPO}/Dockerfile"
+		env -i \
+			NAMESPACE="${NAMESPACE}" \
+			TAG="${DATE}" \
+			MAINTAINER="${AUTHOR}" \
+			envsubst '
+				${NAMESPACE}
+				${TAG}
+				${MAINTAINER}
+				' \
+				< "${REPO}/Dockerfile.template" > "${REPO}/Dockerfile"
 		docker build -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" || die "failed to build"
 	fi
 	docker tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" || die "failed to tag"

@@ -3,9 +3,10 @@
 Dockerfiles are sorted into directories with names matching the
 suggested repository.  To avoid duplicating ephemeral data (namespace,
 timestamp tag, …), they appear in the `Dockerfile.template` as markers
-(`NAMESPACE`, `TAG`, …).  The `build.sh` script replaces the markers
-with values while generating a `Dockerfile` from each
-`Dockerfile.template`, and then builds each tag with:
+(`${NAMESPACE}`, `${TAG}`, …).  The `build.sh` script replaces the
+markers with values while generating a `Dockerfile` from each
+`Dockerfile.template` (using [envsubst][]), and then builds each tag
+with:
 
     $ docker build -t $NAMESPACE/$REPO:$TAG $REPO
 
@@ -48,5 +49,6 @@ from the host.
 [Docker]: http://www.docker.io/
 [Dockerfiles]: http://www.docker.io/learn/dockerfile/
 [Gentoo]: http://www.gentoo.org/
+[envsubst]: http://www.gnu.org/software/gettext/manual/html_node/envsubst-Invocation.html
 [parameter-expansion]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
 [3156]: https://github.com/dotcloud/docker/issues/3156

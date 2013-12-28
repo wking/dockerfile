@@ -22,9 +22,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM NAMESPACE/gentoo-portage:TAG
-MAINTAINER A. U. Thor <author@example.com>
-#VOLUME ["PORTAGE:/usr/portage:ro", "PORTAGE/distfiles:/usr/portage/distfiles:rw"]
+FROM ${NAMESPACE}/gentoo-portage:${TAG}
+MAINTAINER ${MAINTAINER}
+#VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
 RUN echo en_US ISO-8859-1 > /etc/locale.gen
 RUN echo en_US.UTF-8 UTF-8 >> /etc/locale.gen
 RUN locale-gen

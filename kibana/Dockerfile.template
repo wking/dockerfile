@@ -22,9 +22,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM NAMESPACE/nginx:TAG
-MAINTAINER A. U. Thor <author@example.com>
-#VOLUME ["PORTAGE:/usr/portage:ro", "PORTAGE/distfiles:/usr/portage/distfiles:rw"]
+FROM ${NAMESPACE}/nginx:${TAG}
+MAINTAINER ${MAINTAINER}
+#VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
 RUN wget https://download.elasticsearch.org/kibana/kibana/kibana-3.0.0milestone4.tar.gz
 RUN tar -xvf kibana-3.0.0milestone4.tar.gz --strip-components 1 -C /var/www/localhost/htdocs
 RUN sed -i 's|"http://"+window.location.hostname+":9200"|"ELASTICSEARCH_URL"|' /var/www/localhost/htdocs/config.js

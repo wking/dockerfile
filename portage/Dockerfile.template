@@ -22,8 +22,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM NAMESPACE/portage-import:TAG
-MAINTAINER A. U. Thor <author@example.com>
+FROM ${NAMESPACE}/portage-import:${TAG}
+MAINTAINER ${MAINTAINER}
 
 # -volumes-from doesn't map names, so we need to shift /portage to
 #  /usr/portage.  Add a statically-linked BusyBox for RUN commands.
