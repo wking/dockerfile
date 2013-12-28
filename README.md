@@ -22,6 +22,7 @@ The dependency graph is:
                 |-- buildbot  (adds a Buildbot master and slave)
                 |-- postgresql  (adds PostgreSQL)
                 |-- redis  (adds Redis)
+                |-- stunnel  (adds stunnel)
                 `-- gentoo-java  (adds IcedTea)
                     `-- elasticsearch  (adds Elasticsearch)
 

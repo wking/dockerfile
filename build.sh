@@ -46,6 +46,7 @@ REPOS="${REPOS:-
 	elasticsearch
 	postgresql
 	redis
+	stunnel
 	}"
 
 die()
