@@ -38,6 +38,8 @@ RUN sed -i 's/need net$/use net/' /etc/init.d/*
 # A configurable environment variable (e.g. CONFIG_URL) would be nice.
 # Until then, hardcode the tweaks I need.
 RUN sed -i 's/\(# maxmemory-policy.*\)/\1\nmaxmemory-policy allkeys-lru/' /etc/redis.conf
+RUN sed -i 's/^\(logfile.*\)/# \1/' /etc/redis.conf
+RUN sed -i 's/\(# syslog-enabled.*\)/\1\nsyslog-enabled yes/' /etc/redis.conf
 
 CMD rc default && tail -F /var/log/messages
 EXPOSE 6379
