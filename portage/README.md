@@ -44,5 +44,13 @@ will still be local to your client containers, so you'll get
 promptings for reading the news on both `d1a49abc4b3c` and
 `187adaf8babd`.
 
+You can use container volumes even if their container is not running.
+For example:
+
+    $ docker run -name portage wking/portage true
+
+However, it may be useful to leave the container running so you don't
+remove it up by accident.
+
 [VOLUME]: http://docs.docker.io/en/latest/use/builder/#volume
 [volumes-from]: http://docs.docker.io/en/latest/use/working_with_volumes/#mount-volumes-from-an-existing-container
