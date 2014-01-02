@@ -32,6 +32,7 @@ RUN eselect news read new
 RUN rc-update add nginx default
 
 RUN sed -i 's/listen 127.0.0.1;/listen 80 default_server;/' /etc/nginx/nginx.conf
+RUN sed -i 's/server_name localhost;/server_name _;/' /etc/nginx/nginx.conf
 RUN mkdir /var/www/localhost/htdocs
 
 # Container networking happens automatically
