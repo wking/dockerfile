@@ -29,6 +29,7 @@ RUN emerge -v dev-db/postgresql-server
 RUN eselect news read new
 RUN rc-update add $(basename /etc/init.d/postgresql-*) default
 RUN yes | emerge --config dev-db/postgresql-server
+VOLUME ["/var/lib/postgresql"]
 
 # Expose PostgreSQL to external network connections
 RUN echo "listen_addresses = '*'"  >> $(echo /etc/postgresql*/postgresql.conf)

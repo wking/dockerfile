@@ -46,22 +46,25 @@ You can also access it from unlinked containers:
 Basically, anyone with access to the `docker0` bridge has access to
 the client's port.
 
-If you're going to be loading a large database ([devicemapper only
-supports 16GB][devicemapper-size-limit]), you may want to
-[volume-mount] the database.  Grab the configured stuff we'll want to
-mount:
+To allow mounting a large database ([devicemapper only supports
+16GB][devicemapper-size-limit]) we declare `/var/lib/postgresql` as a
+[VOLUME][].  This means that `/var/lib/postgresql` is stored outside
+the image (under `/var/lib/docker/vfs/dir` with metadata under
+`/var/lib/docker/volumes`) and mounted automatically when you spin up
+a container.  From a [pending version][fd24041] of [issue 3389][3389]:
 
-    # docker run -d -name postgresql-0 wking/postgresql
-    # docker cp postgresql-0:/var/lib/postgresql/ /var/lib/
-    # mv /var/lib/postgresql/ /var/lib/postgresql-0
-    # docker kill postgresql-0
-    # docker rm postgresql-0
+> If you remove containers that mount volumes, including the initial
+> `DATA` container, or the middleman, the volumes will not be deleted
+> until there are no containers still referencing those volumes. This
+> allows you to upgrade, or effectivly migrate data volumes between
+> containers.
 
-And run future containers with:
-
-    $ docker run -d -name postgresql-0 -v /var/lib/postgresql-0:/var/lib/postgresql wking/postgresql
+That means you should be able to migrate your `/var/lib/postgresql`
+data to new PostgreSQL containers (e.g. if you upgrade PostgreSQL).
 
 [PostgreSQL]: http://postgresql.io/
 [linking]: http://docs.docker.io/en/latest/use/port_redirection/#linking-a-container
 [devicemapper-size-limit]: https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt
-[volume-mount]: http://docs.docker.io/en/latest/use/working_with_volumes/#mount-a-host-directory-as-a-container-volume
+[VOLUME]: http://docs.docker.io/en/latest/use/working_with_volumes/#getting-started
+[fd24041]: https://github.com/SvenDowideit/docker/commit/fd240413ff835ee72741d839dccbee24e5cc410c
+[3389]: https://github.com/dotcloud/docker/pull/3389
