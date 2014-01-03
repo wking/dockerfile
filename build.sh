@@ -46,6 +46,7 @@ REPOS="${REPOS:-
 	elasticsearch
 	memcached
 	nginx
+	nginx-proxy
 	kibana
 	postgresql
 	redis

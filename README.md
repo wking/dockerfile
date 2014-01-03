@@ -23,6 +23,7 @@ The dependency graph is:
                 |-- buildbot  (adds a Buildbot master and slave)
                 |-- memcached  (adds Memcached)
                 |-- nginx  (adds Nginx)
+                |   |-- nginx-proxy  (SSL/TLS proxying via SNI)
                 |   `-- kibana  (adds Kibana)
                 |-- postgresql  (adds PostgreSQL)
                 |-- redis  (adds Redis)
