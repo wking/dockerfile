@@ -32,8 +32,11 @@ RUN yes | emerge --config dev-db/postgresql-server
 VOLUME ["/var/lib/postgresql"]
 
 # Expose PostgreSQL to external network connections
-RUN echo "listen_addresses = '*'"  >> $(echo /etc/postgresql*/postgresql.conf)
+RUN sed -i "s/\(#listen_addresses =.*\)/listen_addresses = '*'\n\1/" /etc/postgresql*/postgresql.conf
 RUN echo host  all  all  0.0.0.0/0  trust >> $(echo /etc/postgresql*/pg_hba.conf)
+
+# Setup logging
+RUN sed -i "s/\(#log_destination =.*\)/log_destination = 'syslog'\n\1/" /etc/postgresql*/postgresql.conf
 
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
