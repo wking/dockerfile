@@ -27,7 +27,7 @@
 AUTHOR="${AUTHOR:-W. Trevor King <wking@tremily.us>}"
 NAMESPACE="${NAMESPACE:-wking}"
 DATE="${DATE:-20131226}"
-MIRROR="${MIRROR:-http://mirror.mcs.anl.gov/pub/gentoo/}"
+MIRROR="${MIRROR:-http://distfiles.gentoo.org/}"
 ARCH_URL="${ARCH_URL:-${MIRROR}releases/amd64/current-stage3/}"
 STAGE3="${STAGE3:-stage3-amd64-${DATE}.tar.bz2}"
 STAGE3_CONTENTS="${STAGE3_CONTENTS:-${STAGE3}.CONTENTS}"
