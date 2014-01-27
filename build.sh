@@ -36,6 +36,9 @@ PORTAGE_URL="${PORTAGE_URL:-${MIRROR}snapshots/}"
 PORTAGE="${PORTAGE:-portage-${DATE}.tar.xz}"
 PORTAGE_SIG="${PORTAGE_SIG:-${PORTAGE}.gpgsig}"
 
+DOCKER_IO=$(command -v docker.io)
+DOCKER="${DOCKER:-${DOCKER_IO:-docker}}"
+
 REPOS="${REPOS:-
 	portage
 	gentoo-portage
@@ -69,7 +72,7 @@ if [ -z "${REALPATH}" ]; then
 	fi
 fi
 
-STAGE3_IMAGES=$(docker images "${NAMESPACE}/gentoo")
+STAGE3_IMAGES=$("${DOCKER}" images "${NAMESPACE}/gentoo")
 STAGE3_MATCHES=$(echo "${STAGE3_IMAGES}" | grep "${DATE}")
 if [ -z "${STAGE3_MATCHES}" ]; then
 	# import stage3 image from Gentoo mirrors
@@ -88,12 +91,12 @@ if [ -z "${STAGE3_MATCHES}" ]; then
 		die "${SHA512_FAILED}"
 	fi
 
-	docker import - "${NAMESPACE}/gentoo:${DATE}" < "downloads/${STAGE3}" || die "failed to import"
+	"${DOCKER}" import - "${NAMESPACE}/gentoo:${DATE}" < "downloads/${STAGE3}" || die "failed to import"
 fi
 
-docker tag -f "${NAMESPACE}/gentoo:${DATE}" "${NAMESPACE}/gentoo:latest" || die "failed to tag"
+"${DOCKER}" tag -f "${NAMESPACE}/gentoo:${DATE}" "${NAMESPACE}/gentoo:latest" || die "failed to tag"
 
-PORTAGE_IMAGES=$(docker images "${NAMESPACE}/portage-import")
+PORTAGE_IMAGES=$("${DOCKER}" images "${NAMESPACE}/portage-import")
 PORTAGE_MATCHES=$(echo "${PORTAGE_IMAGES}" | grep "${DATE}")
 if [ -z "${PORTAGE_MATCHES}" ]; then
 	# import portage image from Gentoo mirrors
@@ -106,19 +109,19 @@ if [ -z "${PORTAGE_MATCHES}" ]; then
 
 	gpg --verify "downloads/${PORTAGE_SIG}" "downloads/${PORTAGE}" || die "insecure digests"
 
-	docker import - "${NAMESPACE}/portage-import:${DATE}" < "downloads/${PORTAGE}" || die "failed to import"
+	"${DOCKER}" import - "${NAMESPACE}/portage-import:${DATE}" < "downloads/${PORTAGE}" || die "failed to import"
 fi
 
-docker tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" || die "failed to tag"
+"${DOCKER}" tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" || die "failed to tag"
 
 # extract Busybox for the portage image
 THIS_DIR=$(dirname $($REALPATH $0))
 CONTAINER="${NAMESPACE}-gentoo-${DATE}-extract-busybox"
-docker run -name "${CONTAINER}" -v "${THIS_DIR}/portage/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
-docker rm "${CONTAINER}"
+"${DOCKER}" run -name "${CONTAINER}" -v "${THIS_DIR}/portage/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
+"${DOCKER}" rm "${CONTAINER}"
 
 for REPO in ${REPOS}; do
-	REPO_IMAGES=$(docker images "${NAMESPACE}/${REPO}")
+	REPO_IMAGES=$("${DOCKER}" images "${NAMESPACE}/${REPO}")
 	REPO_MATCHES=$(echo "${REPO_IMAGES}" | grep "${DATE}")
 	if [ -z "${REPO_MATCHES}" ]; then
 		env -i \
@@ -131,7 +134,7 @@ for REPO in ${REPOS}; do
 				${MAINTAINER}
 				' \
 				< "${REPO}/Dockerfile.template" > "${REPO}/Dockerfile"
-		docker build -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" || die "failed to build"
+		"${DOCKER}" build -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" || die "failed to build"
 	fi
-	docker tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" || die "failed to tag"
+	"${DOCKER}" tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" || die "failed to tag"
 done
