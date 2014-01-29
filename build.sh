@@ -199,10 +199,31 @@ build_repo()
 	"${DOCKER}" tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" || die "failed to tag"
 }
 
-import_stage3
-import_portage
-extract_busybox
+build()
+{
+	import_stage3
+	import_portage
+	extract_busybox
 
-for REPO in ${REPOS}; do
-	build_repo "${REPO}"
-done
+	for REPO in ${REPOS}; do
+		build_repo "${REPO}"
+	done
+}
+
+missing()
+{
+	for REPO in gentoo portage-import ${REPOS}; do
+		if ! repo_exists "${REPO}"; then
+			msg "${REPO}"
+		fi
+	done
+}
+
+ACTION="${1:-build}"
+
+case "${ACTION}" in
+build) build ;;
+missing) missing ;;
+--help) msg "usage: ${0} [--help] {build|missing}" ;;
+*) die "invalid action '${ACTION}'" ;;
+esac
