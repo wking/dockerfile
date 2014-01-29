@@ -77,6 +77,23 @@ if [ -z "${REALPATH}" ]; then
 	fi
 fi
 
+# Does "${NAMESPACE}/${REPO}:${DATE}" exist?
+# Returns 0 (exists) or 1 (missing).
+#
+# Arguments:
+#
+# 1: REPO
+repo_exists()
+{
+	REPO="${1}"
+	IMAGES=$("${DOCKER}" images "${NAMESPACE}/${REPO}")
+	MATCHES=$(echo "${IMAGES}" | grep "${DATE}")
+	if [ -z "${MATCHES}" ]; then
+		return 1
+	fi
+	return 0
+}
+
 # If they don't already exist:
 #
 # * download the stage3 and
@@ -86,9 +103,7 @@ fi
 import_stage3()
 {
 	msg "import stage3"
-	STAGE3_IMAGES=$("${DOCKER}" images "${NAMESPACE}/gentoo")
-	STAGE3_MATCHES=$(echo "${STAGE3_IMAGES}" | grep "${DATE}")
-	if [ -z "${STAGE3_MATCHES}" ]; then
+	if ! repo_exists gentoo; then
 		# import stage3 image from Gentoo mirrors
 
 		for FILE in "${STAGE3}" "${STAGE3_CONTENTS}" "${STAGE3_DIGESTS}"; do
@@ -122,9 +137,7 @@ import_stage3()
 import_portage()
 {
 	msg "import portage"
-	PORTAGE_IMAGES=$("${DOCKER}" images "${NAMESPACE}/portage-import")
-	PORTAGE_MATCHES=$(echo "${PORTAGE_IMAGES}" | grep "${DATE}")
-	if [ -z "${PORTAGE_MATCHES}" ]; then
+	if ! repo_exists portage-import; then
 		# import portage image from Gentoo mirrors
 
 		for FILE in "${PORTAGE}" "${PORTAGE_SIG}"; do
@@ -167,9 +180,7 @@ build_repo()
 {
 	REPO="${1}"
 	msg "build repo ${REPO}"
-	REPO_IMAGES=$("${DOCKER}" images "${NAMESPACE}/${REPO}")
-	REPO_MATCHES=$(echo "${REPO_IMAGES}" | grep "${DATE}")
-	if [ -z "${REPO_MATCHES}" ]; then
+	if ! repo_exists "${REPO}"; then
 		env -i \
 			NAMESPACE="${NAMESPACE}" \
 			TAG="${DATE}" \
