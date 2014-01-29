@@ -62,6 +62,11 @@ die()
 	exit 1
 }
 
+msg()
+{
+	echo "$@"
+}
+
 REALPATH="${REALPATH:-$(command -v realpath)}"
 if [ -z "${REALPATH}" ]; then
 	READLINK="${READLINK:-$(command -v readlink)}"
@@ -72,55 +77,96 @@ if [ -z "${REALPATH}" ]; then
 	fi
 fi
 
-STAGE3_IMAGES=$("${DOCKER}" images "${NAMESPACE}/gentoo")
-STAGE3_MATCHES=$(echo "${STAGE3_IMAGES}" | grep "${DATE}")
-if [ -z "${STAGE3_MATCHES}" ]; then
-	# import stage3 image from Gentoo mirrors
+# If they don't already exist:
+#
+# * download the stage3 and
+# * create "${NAMESPACE}/gentoo:${DATE}"
+#
+# Forcibly tag "${NAMESPACE}/gentoo:${DATE}" with "latest"
+import_stage3()
+{
+	msg "import stage3"
+	STAGE3_IMAGES=$("${DOCKER}" images "${NAMESPACE}/gentoo")
+	STAGE3_MATCHES=$(echo "${STAGE3_IMAGES}" | grep "${DATE}")
+	if [ -z "${STAGE3_MATCHES}" ]; then
+		# import stage3 image from Gentoo mirrors
 
-	for FILE in "${STAGE3}" "${STAGE3_CONTENTS}" "${STAGE3_DIGESTS}"; do
-		if [ ! -f "downloads/${FILE}" ]; then
-			wget -O "downloads/${FILE}" "${ARCH_URL}${FILE}"
+		for FILE in "${STAGE3}" "${STAGE3_CONTENTS}" "${STAGE3_DIGESTS}"; do
+			if [ ! -f "downloads/${FILE}" ]; then
+				wget -O "downloads/${FILE}" "${ARCH_URL}${FILE}"
+			fi
+		done
+
+		gpg --verify "downloads/${STAGE3_DIGESTS}" || die "insecure digests"
+		SHA512_HASHES=$(grep -A1 SHA512 "downloads/${STAGE3_DIGESTS}" | grep -v '^--')
+		SHA512_CHECK=$(cd downloads/ && (echo "${SHA512_HASHES}" | sha512sum -c))
+		SHA512_FAILED=$(echo "${SHA512_CHECK}" | grep FAILED)
+		if [ -n "${SHA512_FAILED}" ]; then
+			die "${SHA512_FAILED}"
 		fi
-	done
 
-	gpg --verify "downloads/${STAGE3_DIGESTS}" || die "insecure digests"
-	SHA512_HASHES=$(grep -A1 SHA512 "downloads/${STAGE3_DIGESTS}" | grep -v '^--')
-	SHA512_CHECK=$(cd downloads/ && (echo "${SHA512_HASHES}" | sha512sum -c))
-	SHA512_FAILED=$(echo "${SHA512_CHECK}" | grep FAILED)
-	if [ -n "${SHA512_FAILED}" ]; then
-		die "${SHA512_FAILED}"
+		msg "import ${NAMESPACE}/gentoo:${DATE}"
+		"${DOCKER}" import - "${NAMESPACE}/gentoo:${DATE}" < "downloads/${STAGE3}" || die "failed to import"
 	fi
 
-	"${DOCKER}" import - "${NAMESPACE}/gentoo:${DATE}" < "downloads/${STAGE3}" || die "failed to import"
-fi
+	msg "tag ${NAMESPACE}/gentoo:latest"
+	"${DOCKER}" tag -f "${NAMESPACE}/gentoo:${DATE}" "${NAMESPACE}/gentoo:latest" || die "failed to tag"
+}
 
-"${DOCKER}" tag -f "${NAMESPACE}/gentoo:${DATE}" "${NAMESPACE}/gentoo:latest" || die "failed to tag"
+# If they don't already exist:
+#
+# * download a portage snapshot and
+# * create "${NAMESPACE}/portage-import:${DATE}"
+#
+# Forcibly tag "${NAMESPACE}/portage-import:${DATE}" with "latest"
+import_portage()
+{
+	msg "import portage"
+	PORTAGE_IMAGES=$("${DOCKER}" images "${NAMESPACE}/portage-import")
+	PORTAGE_MATCHES=$(echo "${PORTAGE_IMAGES}" | grep "${DATE}")
+	if [ -z "${PORTAGE_MATCHES}" ]; then
+		# import portage image from Gentoo mirrors
 
-PORTAGE_IMAGES=$("${DOCKER}" images "${NAMESPACE}/portage-import")
-PORTAGE_MATCHES=$(echo "${PORTAGE_IMAGES}" | grep "${DATE}")
-if [ -z "${PORTAGE_MATCHES}" ]; then
-	# import portage image from Gentoo mirrors
+		for FILE in "${PORTAGE}" "${PORTAGE_SIG}"; do
+			if [ ! -f "downloads/${FILE}" ]; then
+				wget -O "downloads/${FILE}" "${PORTAGE_URL}${FILE}"
+			fi
+		done
 
-	for FILE in "${PORTAGE}" "${PORTAGE_SIG}"; do
-		if [ ! -f "downloads/${FILE}" ]; then
-			wget -O "downloads/${FILE}" "${PORTAGE_URL}${FILE}"
-		fi
-	done
+		gpg --verify "downloads/${PORTAGE_SIG}" "downloads/${PORTAGE}" || die "insecure digests"
 
-	gpg --verify "downloads/${PORTAGE_SIG}" "downloads/${PORTAGE}" || die "insecure digests"
+		msg "import ${NAMESPACE}/portage-import:${DATE}"
+		"${DOCKER}" import - "${NAMESPACE}/portage-import:${DATE}" < "downloads/${PORTAGE}" || die "failed to import"
+	fi
 
-	"${DOCKER}" import - "${NAMESPACE}/portage-import:${DATE}" < "downloads/${PORTAGE}" || die "failed to import"
-fi
-
-"${DOCKER}" tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" || die "failed to tag"
+	msg "tag ${NAMESPACE}/portage-import:latest"
+	"${DOCKER}" tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" || die "failed to tag"
+}
 
 # extract Busybox for the portage image
-THIS_DIR=$(dirname $($REALPATH $0))
-CONTAINER="${NAMESPACE}-gentoo-${DATE}-extract-busybox"
-"${DOCKER}" run -name "${CONTAINER}" -v "${THIS_DIR}/portage/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
-"${DOCKER}" rm "${CONTAINER}"
+extract_busybox()
+{
+	msg "extract Busybox for the portage image"
+	THIS_DIR=$(dirname $($REALPATH $0))
+	CONTAINER="${NAMESPACE}-gentoo-${DATE}-extract-busybox"
+	"${DOCKER}" run -name "${CONTAINER}" -v "${THIS_DIR}/portage/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
+	"${DOCKER}" rm "${CONTAINER}"
+}
 
-for REPO in ${REPOS}; do
+# If it doesn't already exist:
+#
+# * create "${NAMESPACE}/${REPO}:${DATE}" from
+#   "${REPO}/Dockerfile.template"
+#
+# Forcibly tag "${NAMESPACE}/${REPO}:${DATE}" with "latest"
+#
+# Arguments:
+#
+# 1: REPO
+build_repo()
+{
+	REPO="${1}"
+	msg "build repo ${REPO}"
 	REPO_IMAGES=$("${DOCKER}" images "${NAMESPACE}/${REPO}")
 	REPO_MATCHES=$(echo "${REPO_IMAGES}" | grep "${DATE}")
 	if [ -z "${REPO_MATCHES}" ]; then
@@ -134,7 +180,18 @@ for REPO in ${REPOS}; do
 				${MAINTAINER}
 				' \
 				< "${REPO}/Dockerfile.template" > "${REPO}/Dockerfile"
+
+		msg "build ${NAMESPACE}/${REPO}:${DATE}"
 		"${DOCKER}" build -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" || die "failed to build"
 	fi
+	msg "tag ${NAMESPACE}/${REPO}:latest"
 	"${DOCKER}" tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" || die "failed to tag"
+}
+
+import_stage3
+import_portage
+extract_busybox
+
+for REPO in ${REPOS}; do
+	build_repo "${REPO}"
 done
