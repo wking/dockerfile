@@ -157,12 +157,17 @@ import_portage()
 }
 
 # extract Busybox for the portage image
+#
+# Arguments:
+#
+# 1: SUBDIR target subdirectory for the busybox binary
 extract_busybox()
 {
-	msg "extract Busybox for the portage image"
+	SUBDIR="${1}"
+	msg "extract Busybox binary to ${SUBDIR}"
 	THIS_DIR=$(dirname $($REALPATH $0))
 	CONTAINER="${NAMESPACE}-gentoo-${DATE}-extract-busybox"
-	"${DOCKER}" run -name "${CONTAINER}" -v "${THIS_DIR}/portage/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
+	"${DOCKER}" run -name "${CONTAINER}" -v "${THIS_DIR}/${SUBDIR}/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
 	"${DOCKER}" rm "${CONTAINER}"
 }
 
@@ -181,6 +186,10 @@ build_repo()
 	REPO="${1}"
 	msg "build repo ${REPO}"
 	if ! repo_exists "${REPO}"; then
+		if [ "${REPO}" = portage ]; then
+			extract_busybox "${REPO}"
+		fi
+
 		env -i \
 			NAMESPACE="${NAMESPACE}" \
 			TAG="${DATE}" \
@@ -203,7 +212,6 @@ build()
 {
 	import_stage3
 	import_portage
-	extract_busybox
 
 	for REPO in ${REPOS}; do
 		build_repo "${REPO}"
