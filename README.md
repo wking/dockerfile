@@ -44,8 +44,7 @@ as you see fit.
     $ NAMESPACE=jdoe DATE=20131210 ./build.sh
 
 I'd like to avoid bloating the images with the Portage tree, but
-without ugly hacks [that is not currently possible][3156] is mounted
-from the host.
+without ugly hacks [that is not currently possible][3156].
 
 [Docker]: http://www.docker.io/
 [Dockerfiles]: http://www.docker.io/learn/dockerfile/
