@@ -28,6 +28,7 @@ RUN sed -i 's/#rc_sys=""/rc_sys="lxc"/g' /etc/rc.conf
 RUN echo 'GENTOO_MIRRORS="http://mirror.mcs.anl.gov/pub/gentoo/"' >> /etc/portage/make.conf
 #RUN echo 'SYNC="rsync://rsync.us.gentoo.org"' >> /etc/portage/make.conf
 RUN mkdir -p /usr/portage
+RUN chown -R portage:portage /usr/portage
 RUN emerge-webrsync
 RUN emerge --sync --quiet
 RUN eselect news read new
