@@ -1,0 +1,42 @@
+# Copyright (C) 2013 W. Trevor King <wking@tremily.us>
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+FROM ${NAMESPACE}/gentoo-syslog:${TAG}
+MAINTAINER ${MAINTAINER}
+#VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
+RUN echo 'USE="${USE} sqlite"' >> /etc/portage/make.conf
+RUN echo 'PYTHON_TARGETS="python2_7"' >> /etc/portage/make.conf
+RUN echo 'PYTHON_SINGLE_TARGET="python2_7"' >> /etc/portage/make.conf
+RUN echo 'USE_PYTHON="2.7"' >> /etc/portage/make.conf
+ADD package.accept_keywords /etc/portage/package.accept_keywords
+RUN emerge -v dev-python/blinker dev-python/boto dev-python/backports-lzma dev-python/flask dev-python/gevent dev-python/pyopenssl dev-python/python-glanceclient dev-python/python-keystoneclient dev-python/python-swiftclient dev-python/pyyaml dev-python/redis-py dev-python/requests dev-python/rsa dev-python/simplejson dev-vcs/git www-servers/gunicorn
+RUN eselect news read new
+RUN git clone git://github.com/dotcloud/docker-registry.git
+RUN cp --no-clobber docker-registry/config/config_sample.yml docker-registry/config/config.yml
+
+# Container networking happens automatically
+RUN sed -i 's/need net$/use net/' /etc/init.d/*
+
+CMD cd docker-registry && ./setup-configs.sh && ./run.sh
+EXPOSE 5000
