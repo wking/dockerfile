@@ -110,7 +110,8 @@ import_stage3()
 
 		for FILE in "${STAGE3}" "${STAGE3_CONTENTS}" "${STAGE3_DIGESTS}"; do
 			if [ ! -f "downloads/${FILE}" ]; then
-				wget -O "downloads/${FILE}" "${ARCH_URL}${FILE}"
+				wget -O "downloads/${FILE}" "${ARCH_URL}${FILE}" ||
+					die "failed to download ${ARCH_URL}${FILE}"
 			fi
 		done
 
@@ -144,7 +145,8 @@ import_portage()
 
 		for FILE in "${PORTAGE}" "${PORTAGE_SIG}"; do
 			if [ ! -f "downloads/${FILE}" ]; then
-				wget -O "downloads/${FILE}" "${PORTAGE_URL}${FILE}"
+				wget -O "downloads/${FILE}" "${PORTAGE_URL}${FILE}" ||
+					die "failed to download ${PORTAGE_URL}${FILE}"
 			fi
 		done
 
