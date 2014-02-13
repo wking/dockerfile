@@ -38,6 +38,7 @@ PORTAGE_SIG="${PORTAGE_SIG:-${PORTAGE}.gpgsig}"
 
 DOCKER_IO=$(command -v docker.io)
 DOCKER="${DOCKER:-${DOCKER_IO:-docker}}"
+BUILD_OPTS="${BUILD_OPTS:-}"
 
 REPOS="${REPOS:-
 	portage
@@ -203,7 +204,7 @@ build_repo()
 				< "${REPO}/Dockerfile.template" > "${REPO}/Dockerfile"
 
 		msg "build ${NAMESPACE}/${REPO}:${DATE}"
-		"${DOCKER}" build -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" || die "failed to build"
+		"${DOCKER}" build ${BUILD_OPTS} -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" || die "failed to build"
 	fi
 	msg "tag ${NAMESPACE}/${REPO}:latest"
 	"${DOCKER}" tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" || die "failed to tag"
