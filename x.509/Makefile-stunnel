@@ -1,0 +1,45 @@
+# Create self-signed certificates with GnuTLS [1]
+#
+# This is useful for testing with the stunnel container.
+#
+# You should probably write your own templates [2], but if you don't
+# this Makefile will use ORGANIZATION to create a very basic template.
+#
+# [1]: http://www.gnutls.org/
+# [2]: http://www.gnutls.org/manual/html_node/certtool-Invocation.html#Certtool_0027s-template-file-format
+
+ORGANIZATION ?= Example, Inc.
+DOMAIN ?= example.com
+
+CA_KEY ?= /etc/ssl/ca/key.pem
+CA_CERT ?= /etc/ssl/ca/ca.pem
+
+.PRECIOUS: %.tmpl %.key %.cert %.pem
+
+all: stunnel.pem
+
+clean:
+	rm -f key.pem cert.pem stunnel.pem
+
+cert.tmpl:
+	echo 'organization = $(ORGANIZATION)' > "$@"
+	echo 'cn = $(DOMAIN)' >> "$@"
+	echo 'dns_name = $(DOMAIN)' >> "$@"
+	echo 'tls_www_server' >> "$@"
+	echo 'encryption_key' >> "$@"
+
+key.pem:
+	certtool --generate-privkey --outfile "$@"
+
+cert.pem: cert.tmpl key.pem $(CA_KEY) $(CA_CERT)
+	certtool --generate-certificate \
+		--template cert.tmpl \
+		--load-privkey key.pem \
+		--load-ca-privkey "$(CA_KEY)" \
+		--load-ca-certificate "$(CA_CERT)" \
+		--outfile "$@"
+
+stunnel.pem: key.pem cert.pem
+	touch "$@"
+	chmod 600 "$@"
+	cat $^ > "$@"
