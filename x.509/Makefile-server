@@ -1,0 +1,53 @@
+# Create self-signed certificates with GnuTLS [1]
+#
+# This is useful for testing with the nginx-proxy container.
+#
+# You should probably write your own templates [2], but if you don't
+# this Makefile will use ORGANIZATION to create a very basic template.
+#
+# [1]: http://www.gnutls.org/
+# [2]: http://www.gnutls.org/manual/html_node/certtool-Invocation.html#Certtool_0027s-template-file-format
+
+ORGANIZATION ?= Example, Inc.
+DOMAIN ?= example.com
+HOSTS ?= www static media kibana es
+DEFAULT ?= www.$(DOMAIN)
+
+CA_KEY ?= /etc/ssl/ca/key.pem
+CA_CERT ?= /etc/ssl/ca/ca.pem
+
+FQDNS = $(patsubst %, %.$(DOMAIN), $(HOSTS))
+KEYS = $(patsubst %, %.key, $(FQDNS))
+CERTS = $(patsubst %, %.cert, $(FQDNS))
+CHAINED_CERTS = $(patsubst %, %.pem, $(FQDNS))
+
+.PRECIOUS: %.tmpl %.key %.cert %.pem
+
+all: $(KEYS) $(CHAINED_CERTS) nginx.key nginx.pem
+
+clean:
+	rm -f *.tmpl *.key *.cert *.pem
+
+%.tmpl:
+	echo 'organization = $(ORGANIZATION)' > "$@"
+	echo 'cn = $*' >> "$@"
+	echo 'dns_name = $*' >> "$@"
+	echo 'tls_www_server' >> "$@"
+	echo 'encryption_key' >> "$@"
+
+$(KEYS): %.key:
+	certtool --generate-privkey --outfile "$@"
+
+$(CERTS): %.cert: %.tmpl %.key $(CA_KEY) $(CA_CERT)
+	certtool --generate-certificate \
+		--template "$*.tmpl" \
+		--load-privkey "$*.key" \
+		--load-ca-privkey "$(CA_KEY)" \
+		--load-ca-certificate "$(CA_CERT)" \
+		--outfile "$@"
+
+$(CHAINED_CERTS): %.pem: %.cert $(CA_CERT)
+	cat $^ > "$@"
+
+nginx.%: $(DEFAULT).%
+	ln -s "$<" "$@"
