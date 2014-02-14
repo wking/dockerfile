@@ -172,7 +172,7 @@ extract_busybox()
 	msg "extract Busybox binary to ${SUBDIR}"
 	THIS_DIR=$(dirname $($REALPATH $0))
 	CONTAINER="${NAMESPACE}-gentoo-${DATE}-extract-busybox"
-	"${DOCKER}" run -name "${CONTAINER}" -v "${THIS_DIR}/${SUBDIR}/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
+	"${DOCKER}" run --name "${CONTAINER}" -v "${THIS_DIR}/${SUBDIR}/":/tmp "${NAMESPACE}/gentoo:${DATE}" cp /bin/busybox /tmp/
 	"${DOCKER}" rm "${CONTAINER}"
 }
 
