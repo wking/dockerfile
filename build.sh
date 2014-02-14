@@ -53,6 +53,7 @@ REPOS="${REPOS:-
 	nginx
 	nginx-proxy
 	kibana
+	kibana-azure
 	postgresql
 	redis
 	stunnel
