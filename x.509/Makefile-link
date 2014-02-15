@@ -1,0 +1,29 @@
+# Create links to a wildcard certificate on the fly
+#
+# This is useful for testing with the nginx-proxy container, but note
+# that functional wildcard certificates are only one subdomain level
+# deep (e.g. *.example.com matches www.example.com but not
+# www.beta.example.com) [1].
+#
+# [1]: http://en.wikipedia.org/wiki/Wildcard_certificate
+
+DOMAIN ?= example.com
+HOSTS ?= www static media kibana es
+
+WILDCARD_KEY ?= /etc/ssl/$(DOMAIN)/wildcard.$(DOMAIN).key
+WILDCARD_CERT_CHAIN ?= /etc/ssl/$(DOMAIN)/wildcard.$(DOMAIN)-chain.crt
+
+FQDNS = $(patsubst %, %.$(DOMAIN), $(HOSTS)) nginx
+KEYS = $(patsubst %, %.key, $(FQDNS))
+CERTS = $(patsubst %, %.pem, $(FQDNS))
+
+all: $(KEYS) $(CERTS)
+
+clean:
+	rm -f *.key *.pem
+
+$(KEYS): %.key: | $(WILDCARD_KEY)
+	ln -s "$(WILDCARD_KEY)" "$@"
+
+$(CERTS): %.pem: | $(WILDCARD_CERT_CHAIN)
+	ln -s "$(WILDCARD_CERT_CHAIN)" "$@"
