@@ -31,6 +31,11 @@ RUN eselect news read new
 RUN rc-update add elasticsearch default
 RUN for x in /etc/elasticsearch/*; do cp "${x}" "${x%.sample}"; done
 
+# Log via Syslog
+RUN sed -i 's/^\(source src { system(); internal();\) };$/\1 udp(ip(127.0.0.1) port(514)); };/' /etc/syslog-ng/syslog-ng.conf
+RUN sed -i 's/^\(rootLogger: .*\), file$/\1, syslog/' /etc/elasticsearch/logging.yml
+RUN sed -i 's/^\(appender:\)$/\1\n  syslog:\n    type: syslog\n    syslogHost: localhost:514\n    facility: daemon\n    laout:\n      type: pattern\n      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"\n/' /etc/elasticsearch/logging.yml
+
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
