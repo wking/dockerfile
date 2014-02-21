@@ -50,11 +50,11 @@ REPOS="${REPOS:-
 	buildbot
 	docker-registry
 	elasticsearch
+	kibana
+	kibana-azure
 	memcached
 	nginx
 	nginx-proxy
-	kibana
-	kibana-azure
 	postgresql
 	redis
 	stunnel
