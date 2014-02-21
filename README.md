@@ -22,6 +22,7 @@ The dependency graph is:
             `-- gentoo-syslog  (adds syslog-ng and associates)
                 |-- buildbot  (adds a Buildbot master and slave)
                 |-- docker-registry  (adds a Docker registry server)
+                |-- gentoo-layman  (adds layman for Gentoo overlays)
                 |-- memcached  (adds Memcached)
                 |-- nginx  (adds Nginx)
                 |   |-- nginx-proxy  (SSL/TLS proxying via SNI)
