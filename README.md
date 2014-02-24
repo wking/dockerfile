@@ -31,6 +31,7 @@ The dependency graph is:
                 |   `-- kibana-azure  (adds Azure's Kibana)
                 |-- postgresql  (adds PostgreSQL)
                 |-- redis  (adds Redis)
+                |-- salt-minion  (adds a Salt Stack minion)
                 |-- stunnel  (adds stunnel)
                 `-- gentoo-java  (adds IcedTea)
                     `-- elasticsearch  (adds Elasticsearch)

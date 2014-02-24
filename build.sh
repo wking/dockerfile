@@ -58,6 +58,7 @@ REPOS="${REPOS:-
 	package-cache
 	postgresql
 	redis
+	salt-minion
 	stunnel
 	}"
 

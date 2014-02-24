@@ -1,0 +1,52 @@
+# Copyright (C) 2014 W. Trevor King <wking@tremily.us>
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+FROM ${NAMESPACE}/gentoo-syslog:${TAG}
+MAINTAINER ${MAINTAINER}
+#VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
+RUN echo 'app-admin/salt git' >> /etc/portage/package.use
+# required by app-admin/salt-0.17.4-r2
+# required by app-admin/salt (argument)
+RUN echo '=dev-python/pyyaml-3.10-r1 ~amd64' >> /etc/portage/package.accept_keywords
+# required by app-admin/salt (argument)
+RUN echo '=app-admin/salt-0.17.4-r2 ~amd64' >> /etc/portage/package.accept_keywords
+# required by app-admin/salt-0.17.4-r2
+# required by app-admin/salt (argument)
+RUN echo '=dev-python/pycryptopp-0.6.0 ~amd64' >> /etc/portage/package.accept_keywords
+# required by app-admin/salt-0.17.4-r2
+# required by app-admin/salt (argument)
+RUN echo '=dev-python/msgpack-0.4.0 ~amd64' >> /etc/portage/package.accept_keywords
+
+RUN emerge -v app-admin/salt
+RUN eselect news read new
+RUN rc-update add salt-minion default
+
+RUN sed -i 's|^#\(log_file: file:///dev/log\)|\1|' /etc/salt/minion
+RUN sed -i 's|^\(#log_level_logfile:.*\)$|\1\nlog_level_logfile: info|' /etc/salt/minion
+
+# Container networking happens automatically
+RUN sed -i 's/need net$/use net/' /etc/init.d/*
+
+CMD rc default && tail -F /var/log/messages
+EXPOSE 80
