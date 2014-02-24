@@ -1,11 +1,11 @@
 Use volume mounts to avoid including the Portage tree in your images:
 
-    $ docker run -d -name portage wking/portage
+    $ docker run -d --name portage wking/portage
 
 This exports a [VOLUME][] which you can [mount][volumes-from] from
 another container:
 
-    $ docker run -volumes-from portage -i -t wking/gentoo /bin/bash
+    $ docker run --volumes-from portage -i -t wking/gentoo /bin/bash
     d1a49abc4b3c / # ls /usr/portage/
     app-accessibility  dev-python        mail-mta         sci-mathematics
     …
@@ -26,7 +26,7 @@ the first container:
 
 Now kill that container and spin up another one:
 
-    $ docker run -volumes-from portage -i -t wking/gentoo /bin/bash
+    $ docker run --volumes-from portage -i -t wking/gentoo /bin/bash
     187adaf8babd / # emerge -pv netcat
     …
     These are the packages that would be merged, in order:
@@ -47,7 +47,7 @@ promptings for reading the news on both `d1a49abc4b3c` and
 You can use container volumes even if their container is not running.
 For example:
 
-    $ docker run -name portage wking/portage true
+    $ docker run --name portage wking/portage true
 
 However, it may be useful to leave the container running so you don't
 remove it up by accident.

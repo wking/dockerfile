@@ -1,6 +1,6 @@
 Run this [package-cache][] image with:
 
-    $ docker run -d -name package-cache-0 -v /var/cache/package-cache-0:/usr/portage -p 4000:80 wking/package-cache
+    $ docker run -d --name package-cache-0 -v /var/cache/package-cache-0:/usr/portage -p 4000:80 wking/package-cache
 
 [volume-mounting][volume-mount] your content under the container's
 `/usr/portage`.  Then setup you host firewall to intercept outgoing

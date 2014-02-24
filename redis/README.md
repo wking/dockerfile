@@ -1,10 +1,10 @@
 Run this [Redis][] image with:
 
-    $ docker run -d -name redis-0 wking/redis
+    $ docker run -d --name redis-0 wking/redis
 
 Then [link][linking] to it from your client container:
 
-    $ docker run -link redis-0:redis your-client
+    $ docker run --link redis-0:redis your-client
 
 Inside your client, use the `REDIS_PORT` environment variable (which
 should be something like `tcp://172.17.0.8:6379`) to configure your

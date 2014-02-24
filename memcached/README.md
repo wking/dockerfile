@@ -1,6 +1,6 @@
 Run this [Memcached][] image with:
 
-    $ docker run -d -name memcached-0 -m 128m -e MEMUSAGE=118 wking/memcached
+    $ docker run -d --name memcached-0 -m 128m -e MEMUSAGE=118 wking/memcached
 
 The 10MB difference between container memory and the
 Memcached-specific `MEMUSAGE` limit gives some overhead for the
@@ -9,7 +9,7 @@ Memcached-specific `MEMUSAGE` limit gives some overhead for the
 
 Then [link][linking] to it from your client container:
 
-    $ docker run -link memcached-0:memcached your-client
+    $ docker run --link memcached-0:memcached your-client
 
 Inside your client, use the `MEMCACHED_PORT` environment variable
 (which should be something like `tcp://172.17.0.8:11211`) to configure

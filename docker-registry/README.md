@@ -1,7 +1,7 @@
 Run this [docker-registry][] image with:
 
     $ mkdir /var/lib/docker-registry
-    $ docker run -d -name docker-registry \
+    $ docker run -d --name docker-registry \
     >   -v /var/lib/docker-registry:/tmp/registry \
     >   -p 5000:5000 wking/docker-registry
 

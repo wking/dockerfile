@@ -3,8 +3,8 @@ encryption using Docker's [linking][].  You'll want to
 [volume-mount][volume-mount] your SSL keys, since you may want
 different keys in every stunnel container.
 
-    $ docker run -d -name postgresql-0 wking/postgresql
-    $ docker run -d -name postgresql-0-ssl -v /etc/postgresql-0-ssl/stunnel.pem:/etc/stunnel/stunnel.pem -link postgresql-0:server -p 5432:9999 wking/stunnel
+    $ docker run -d --name postgresql-0 wking/postgresql
+    $ docker run -d --name postgresql-0-ssl -v /etc/postgresql-0-ssl/stunnel.pem:/etc/stunnel/stunnel.pem --link postgresql-0:server -p 5432:9999 wking/stunnel
 
 [PostgreSQL][] [uses plaintext commands to initiate SSL/TLS
 encryption][SSLRequest] so you can't use `psql` to connect directly to

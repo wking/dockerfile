@@ -1,15 +1,15 @@
 Run this [PostgreSQL][] image with:
 
-    $ docker run -d -name postgresql-0 wking/postgresql
+    $ docker run -d --name postgresql-0 wking/postgresql
 
 Then [link][linking] to it from your client container:
 
-    $ docker run -link postgresql-0:postgresql your-client
+    $ docker run --link postgresql-0:postgresql your-client
 
 For example, we can use the PostgreSQL client in the
 `wking/postgresql` image itself:
 
-    $ docker run -link postgresql-0:postgresql -i -t wking/postgresql /bin/bash
+    $ docker run --link postgresql-0:postgresql -i -t wking/postgresql /bin/bash
     94ca64e60a00 / # HOST_PORT="${POSTGRESQL_PORT#[a-z]*://}"
     94ca64e60a00 / # HOST="${HOST_PORT%:[0-9]*}"
     94ca64e60a00 / # PORT="${HOST_PORT#[0-9.]*:}"

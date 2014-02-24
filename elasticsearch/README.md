@@ -1,14 +1,14 @@
 Run this [Elasticsearch][] image with:
 
-    $ docker run -d -name elasticsearch-0 wking/elasticsearch
+    $ docker run -d --name elasticsearch-0 wking/elasticsearch
 
 Then [link][linking] to it from your client container:
 
-    $ docker run -link elasticsearch-0:elasticsearch your-client
+    $ docker run --link elasticsearch-0:elasticsearch your-client
 
 For example, we can use the Gentoo client:
 
-    $ docker run -link elasticsearch-0:elasticsearch -i -t wking/gentoo /bin/bash
+    $ docker run --link elasticsearch-0:elasticsearch -i -t wking/gentoo /bin/bash
     d30608cbc8a1 / # HOST_PORT="${ELASTICSEARCH_PORT#[a-z]*://}"
     d30608cbc8a1 / # HOST="${HOST_PORT%:[0-9]*}"
     d30608cbc8a1 / # PORT="${HOST_PORT#[0-9.]*:}"

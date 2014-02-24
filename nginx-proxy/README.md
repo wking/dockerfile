@@ -6,9 +6,9 @@ plaintext and [TLS][] connections, and uses [Server Name Indication
 
 Run this [Nginx][] image with:
 
-    $ docker run -d -name nginx-a -v /var/www/a.net/htdocs:/var/www/localhost/htdocs wking/nginx
-    $ docker run -d -name nginx-b -v /var/www/b.com/htdocs:/var/www/localhost/htdocs wking/nginx
-    $ docker run -d -name nginx-proxy-0 -link nginx-a:a -e A_NAME=a.com -link nginx-b:b -e B_NAME=b.net -v /etc/ssl/nginx-proxy-0:/etc/ssl/nginx -p 80:80 -p 443:443 wking/nginx-proxy
+    $ docker run -d --name nginx-a -v /var/www/a.net/htdocs:/var/www/localhost/htdocs wking/nginx
+    $ docker run -d --name nginx-b -v /var/www/b.com/htdocs:/var/www/localhost/htdocs wking/nginx
+    $ docker run -d --name nginx-proxy-0 --link nginx-a:a -e A_NAME=a.com --link nginx-b:b -e B_NAME=b.net -v /etc/ssl/nginx-proxy-0:/etc/ssl/nginx -p 80:80 -p 443:443 wking/nginx-proxy
 
 [volume-mounting][volume-mount] your certificates and keys under the
 container's `/etc/ssl/nginx`.  The `*_NAME` environment variables
