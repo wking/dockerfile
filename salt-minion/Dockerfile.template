@@ -55,6 +55,7 @@ RUN emerge -v app-admin/salt dev-python/git-python
 RUN eselect news read new
 RUN rc-update add salt-minion default
 
+RUN sed -i 's|^\([[:space:]]*\)\(need net\)$|\1\2\n\1need logger|' /etc/init.d/salt-minion
 RUN sed -i 's|^#\(log_file: file:///dev/log\)|\1|' /etc/salt/minion
 RUN sed -i 's|^\(#log_level_logfile:.*\)$|\1\nlog_level_logfile: info|' /etc/salt/minion
 
