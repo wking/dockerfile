@@ -30,7 +30,7 @@ RUN echo 'app-admin/salt git' >> /etc/portage/package.use
 # required by app-admin/salt (argument)
 RUN echo '=dev-python/pyyaml-3.10-r1 ~amd64' >> /etc/portage/package.accept_keywords
 # required by app-admin/salt (argument)
-RUN echo '=app-admin/salt-0.17.4-r2 ~amd64' >> /etc/portage/package.accept_keywords
+RUN echo '=app-admin/salt-9999 **' >> /etc/portage/package.accept_keywords
 # required by app-admin/salt-0.17.4-r2
 # required by app-admin/salt (argument)
 RUN echo '=dev-python/pycryptopp-0.6.0 ~amd64' >> /etc/portage/package.accept_keywords
@@ -51,7 +51,7 @@ RUN echo '=dev-python/async-0.6.1-r1 ~amd64' >> /etc/portage/package.accept_keyw
 # required by dev-python/git-python (argument)
 RUN echo '=dev-python/smmap-0.8.2-r1 ~amd64' >> /etc/portage/package.accept_keywords
 
-RUN emerge -v app-admin/salt dev-python/git-python
+RUN salt_LIVE_COMMIT=v2014.1.0 emerge -v =app-admin/salt-9999 dev-python/git-python
 RUN eselect news read new
 RUN rc-update add salt-minion default
 
