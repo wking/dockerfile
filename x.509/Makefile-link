@@ -9,11 +9,12 @@
 
 DOMAIN ?= example.com
 HOSTS ?= www static media kibana es
+FQDNS ?= $(patsubst %, %.$(DOMAIN), $(HOSTS))
+FQDNS += nginx
 
 WILDCARD_KEY ?= /etc/ssl/$(DOMAIN)/wildcard.$(DOMAIN).key
 WILDCARD_CERT_CHAIN ?= /etc/ssl/$(DOMAIN)/wildcard.$(DOMAIN)-chain.crt
 
-FQDNS = $(patsubst %, %.$(DOMAIN), $(HOSTS)) nginx
 KEYS = $(patsubst %, %.key, $(FQDNS))
 CERTS = $(patsubst %, %.pem, $(FQDNS))
 

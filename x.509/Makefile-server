@@ -12,11 +12,11 @@ ORGANIZATION ?= Example, Inc.
 DOMAIN ?= example.com
 HOSTS ?= www static media kibana es
 DEFAULT ?= www.$(DOMAIN)
+FQDNS ?= $(patsubst %, %.$(DOMAIN), $(HOSTS))
 
 CA_KEY ?= /etc/ssl/ca/key.pem
 CA_CERT ?= /etc/ssl/ca/ca.pem
 
-FQDNS = $(patsubst %, %.$(DOMAIN), $(HOSTS))
 KEYS = $(patsubst %, %.key, $(FQDNS))
 CERTS = $(patsubst %, %.cert, $(FQDNS))
 CHAINED_CERTS = $(patsubst %, %.pem, $(FQDNS))
