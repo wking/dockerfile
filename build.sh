@@ -55,6 +55,7 @@ REPOS="${REPOS:-
 	memcached
 	nginx
 	nginx-proxy
+	ngircd
 	package-cache
 	postgresql
 	redis

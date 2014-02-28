@@ -29,6 +29,7 @@ The dependency graph is:
                 |   |-- nginx-proxy  (SSL/TLS proxying via SNI)
                 |   |-- kibana  (adds Kibana)
                 |   `-- kibana-azure  (adds Azure's Kibana)
+                |-- ngircd  (adds ngIRCd)
                 |-- postgresql  (adds PostgreSQL)
                 |-- redis  (adds Redis)
                 |-- salt-minion  (adds a Salt Stack minion)
