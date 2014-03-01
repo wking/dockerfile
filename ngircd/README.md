@@ -29,7 +29,9 @@ and the [unencrypted port][6667]:
     >   -p 6667:6667 -p 6697:6697 wking/ngircd
 
 You can optionally set a `GLOBAL_PASSWORD` environment variable to
-require a global password for all client connections.
+require a global password for all client connections, although the
+password length is [limited to 20 characters since ngIRCd
+v0.9][password-limit].
 
 [ngIRCd]: http://ngircd.barton.de/
 [TLS]: http://en.wikipedia.org/wiki/Transport_Layer_Security
@@ -39,3 +41,4 @@ require a global password for all client connections.
 [dhparam]: http://www.openssl.org/docs/apps/dhparam.html
 [6697]: http://tools.ietf.org/html/draft-hartmann-default-port-for-irc-via-tls-ssl-09
 [6667]: http://tools.ietf.org/html/draft-hartmann-default-port-for-irc-via-tls-ssl-09#section-1
+[password-limit]: http://ngircd.barton.de/doc/INSTALL
