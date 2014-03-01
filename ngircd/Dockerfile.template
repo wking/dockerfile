@@ -26,6 +26,7 @@ FROM ${NAMESPACE}/gentoo-syslog:${TAG}
 MAINTAINER ${MAINTAINER}
 #VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
 RUN echo 'net-irc/ngircd ~amd64' >> /etc/portage/package.accept_keywords
+RUN echo 'net-irc/ngircd -pam' >> /etc/portage/package.use
 RUN emerge -v net-irc/ngircd
 RUN eselect news read new
 RUN rc-update add ngircd default

@@ -28,6 +28,9 @@ and the [unencrypted port][6667]:
     >   …
     >   -p 6667:6667 -p 6697:6697 wking/ngircd
 
+You can optionally set a `GLOBAL_PASSWORD` environment variable to
+require a global password for all client connections.
+
 [ngIRCd]: http://ngircd.barton.de/
 [TLS]: http://en.wikipedia.org/wiki/Transport_Layer_Security
 [volume-mount]: http://docs.docker.io/en/latest/use/working_with_volumes/

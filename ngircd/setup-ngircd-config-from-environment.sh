@@ -28,15 +28,24 @@
 #        EMAIL="admin@example.net" INFO="testing, testing" \
 #        setup-ngircd-config-from-environment
 
+ENVSUBST='
+	${HOSTNAME}
+	${DESCRIPTION}
+	${LOCATION}
+	${EMAIL}
+	${INFO}
+	'
+
+if [ -n "${GLOBAL_PASSWORD}" ]
+then
+	ENVSUBST="${ENVSUBST} \${GLOBAL_PASSWORD}"
+	# In lines matching '# Global password' or the two succeeding lines,
+	# replace ';Password = .*' with 'Password = ${GLOBAL_PASSWORD}'
+	sed -i '/# Global password/,+2 s/;Password = .*/Password = ${GLOBAL_PASSWORD}/' /etc/ngircd/ngircd.conf
+fi
+
 HOSTNAME=$(hostname -f) \
-	envsubst '
-		${HOSTNAME}
-		${DESCRIPTION}
-		${LOCATION}
-		${EMAIL}
-		${INFO}
-		' \
-		< /etc/ngircd/ngircd.conf > /tmp/ngircd.conf &&
+	envsubst "${ENVSUBST}" < /etc/ngircd/ngircd.conf > /tmp/ngircd.conf &&
 mv /tmp/ngircd.conf /etc/ngircd/ngircd.conf
 
 if [ "${SSL}" = 'yes' ]
