@@ -24,8 +24,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# usage: C1_PORT=tcp://192.168.0.1:12345/ C1_NAME=a.com \
-#        C2_PORT=tcp://192.168.0.2:54321/ C2_NAME=b.net \
+# usage: DESCRIPTION="My IRC server" LOCATION="My attic" \
+#        EMAIL="admin@example.net" INFO="testing, testing" \
 #        setup-ngircd-config-from-environment
 
 HOSTNAME=$(hostname -f) \
@@ -38,3 +38,23 @@ HOSTNAME=$(hostname -f) \
 		' \
 		< /etc/ngircd/ngircd.conf > /tmp/ngircd.conf &&
 mv /tmp/ngircd.conf /etc/ngircd/ngircd.conf
+
+if [ "${SSL}" = 'yes' ]
+then
+	sed -i \
+		-e 's/;\[SSL\]/[SSL]/' \
+		-e 's/;Ports = 6697, 9999/Ports = 6697/' \
+		/etc/ngircd/ngircd.conf
+	if [ -f '/etc/ngircd/ssl/server-cert.pem' ]
+	then
+		sed -i 's/;CertFile/CertFile/' /etc/ngircd/ngircd.conf
+	fi
+	if [ -f '/etc/ngircd/ssl/server-key.pem' ]
+	then
+		sed -i 's/;KeyFile/KeyFile/' /etc/ngircd/ngircd.conf
+	fi
+	if [ -f '/etc/ngircd/ssl/dhparams.pem' ]
+	then
+		sed -i 's/;DHFile/DHFile/' /etc/ngircd/ngircd.conf
+	fi
+fi
