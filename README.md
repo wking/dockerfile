@@ -24,6 +24,7 @@ The dependency graph is:
                 |-- docker-registry  (adds a Docker registry server)
                 |-- gentoo-layman  (adds layman for Gentoo overlays)
                 |   `-- package-cache  (adds a package-cache proxy)
+                |-- hubot  (adds hubot with an IRC adapter)
                 |-- memcached  (adds Memcached)
                 |-- nginx  (adds Nginx)
                 |   |-- nginx-proxy  (SSL/TLS proxying via SNI)

@@ -50,6 +50,7 @@ REPOS="${REPOS:-
 	buildbot
 	docker-registry
 	elasticsearch
+	hubot
 	kibana
 	kibana-azure
 	memcached
