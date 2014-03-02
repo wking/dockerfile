@@ -48,6 +48,7 @@ REPOS="${REPOS:-
 	gentoo-syslog
 	gentoo-java
 	gentoo-layman
+	gentoo-node
 	buildbot
 	docker-registry
 	elasticsearch
