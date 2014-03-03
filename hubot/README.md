@@ -34,6 +34,9 @@ If you want the GitHub scripts to be able to access private
 repositories (e.g. to link to private issues or commits), you need to
 set `HUBOT_GITHUB_TOKEN` to your [OAuth token][token].
 
+If things aren't working as you'd expect, you can crank up the logging
+with `HUBOT_LOG_LEVEL=debug` (see [robot.coffee][]).
+
 [hubot]: https://github.com/github/hubot
 [hubot-irc]: https://github.com/nandub/hubot-irc
 [scripts]: https://github.com/github/hubot-scripts/tree/master/src/scripts
@@ -47,3 +50,4 @@ set `HUBOT_GITHUB_TOKEN` to your [OAuth token][token].
 [redis-brain]: https://github.com/github/hubot-scripts/blob/master/src/scripts/redis-brain.coffee
 [redis]: ../redis/
 [token]: https://help.github.com/articles/creating-an-access-token-for-command-line-use
+[robot.coffee]: https://github.com/github/hubot/blob/master/src/robot.coffee
