@@ -7,9 +7,9 @@ Run this [ngIRCd][] image with:
     >   -e INFO="testing, testing" \
     >   -p 6667:6667 wking/ngircd
 
-For [SSL / TLS][TLS], set the `SSL` environment variable to `yes` and
-[volume-mount][volume-mount] your keys under the container's
-`/etc/ngircd/ssl/`:
+For [SSL / TLS][TLS], set the `SSL` environment variable to `yes` or
+`optional` and [volume-mount][volume-mount] your keys under the
+container's `/etc/ngircd/ssl/`:
 
     $ docker run -d --name ngircd-0 --hostname irc.example.net \
     >   …
@@ -21,11 +21,13 @@ You'll [need][SSL-docs] at least `server-cert.pem` and
 `server-key.pem` in that directory.  If you're using DH or DSA keys,
 you'll also want `dhparams.pem` with [Diffie–Hellman][DH] parameters;
 you can manage the file with OpenSSH's [dhparam][]).  If you don't
-want to require SSL, you can expose both the [encrypted port][6697]
-and the [unencrypted port][6667]:
+want to require SSL, set `SSL` to `optional` and expose both the
+[encrypted port][6697] and the [unencrypted port][6667]:
 
     $ docker run -d --name ngircd-0 --hostname irc.example.net \
     >   …
+    >   -e SSL=optional \
+    >   -v /etc/ssl/ngircd-0:/etc/ngircd/ssl \
     >   -p 6667:6667 -p 6697:6697 wking/ngircd
 
 You can optionally set a `GLOBAL_PASSWORD` environment variable to

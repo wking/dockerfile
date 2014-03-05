@@ -48,8 +48,12 @@ HOSTNAME=$(hostname -f) \
 	envsubst "${ENVSUBST}" < /etc/ngircd/ngircd.conf > /tmp/ngircd.conf &&
 mv /tmp/ngircd.conf /etc/ngircd/ngircd.conf
 
-if [ "${SSL}" = 'yes' ]
+if [ "${SSL}" = 'yes' ] || [ "${SSL}" = 'optional' ]
 then
+	if [ "${SSL}" = 'optional' ]
+	then
+		sed -i 's/;Ports = 6667.*/Ports = 6667/' /etc/ngircd/ngircd.conf
+	fi
 	sed -i \
 		-e 's/;\[SSL\]/[SSL]/' \
 		-e 's/;Ports = 6697, 9999/Ports = 6697/' \
