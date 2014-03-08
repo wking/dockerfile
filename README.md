@@ -27,6 +27,7 @@ The dependency graph is:
                     |   `-- package-cache  (adds a package-cache proxy)
                     |-- gentoo-node  (adds Node and npm)
                     |   `-- hubot  (adds hubot with an IRC adapter)
+                    |-- irker  (adds irker, and spawns irkerd by default)
                     |-- memcached  (adds Memcached)
                     |-- nginx  (adds Nginx)
                     |   |-- nginx-proxy  (SSL/TLS proxying via SNI)

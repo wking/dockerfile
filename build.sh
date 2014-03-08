@@ -53,6 +53,7 @@ REPOS="${REPOS:-
 	docker-registry
 	elasticsearch
 	hubot
+	irker
 	kibana
 	kibana-azure
 	memcached
