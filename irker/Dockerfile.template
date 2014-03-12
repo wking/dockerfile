@@ -44,7 +44,7 @@ RUN emerge -v dev-python/setuptools
 RUN emerge -v net-irc/irker
 
 RUN emerge -v dev-vcs/git
-RUN git clone --branch ssl-tls --single-branch --depth 1 git://tremily.us/irker.git
+RUN git clone --branch next --single-branch --depth 1 git://tremily.us/irker.git
 RUN cp -f irker/irkerd /usr/bin/irkerd
 
 RUN eselect news read new
