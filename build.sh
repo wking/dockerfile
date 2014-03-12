@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (C) 2013 W. Trevor King <wking@tremily.us>
+# Copyright (C) 2013-2014 W. Trevor King <wking@tremily.us>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
