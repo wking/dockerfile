@@ -1,4 +1,6 @@
-# Copyright (C) 2013-2014 W. Trevor King <wking@tremily.us>
+#!/bin/sh
+#
+# Copyright (C) 2014 W. Trevor King <wking@tremily.us>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,18 +24,18 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM ${NAMESPACE}/gentoo-en-us:${TAG}
-MAINTAINER ${MAINTAINER}
-#VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
-RUN emerge -v sys-process/vixie-cron app-admin/syslog-ng app-admin/logrotate
-RUN rc-update add syslog-ng default
-RUN rc-update add vixie-cron default
-ADD tail-syslog.sh /usr/bin/tail-syslog
+# Tail syslog, trapping SIGTERM to trigger a clean container shutdown
 
-# Disable logging to tty12
-RUN sed -i 's/^\([^#].*console_all.*\)/#\1/' /etc/syslog-ng/syslog-ng.conf
+tail -F /var/log/messages &
+pid="$!"
 
-# Log boot process to /var/log/rc.log
-RUN sed -i 's/^#\(rc_logger="YES"\)$/\1/' /etc/rc.conf
+trap "
+	trap '' TERM;
+	logger 'trapped SIGTERM, shutting down';
+	rc shutdown;
+	kill '${pid}';
+	wait '${pid}';
+	exit
+	" TERM
 
-CMD rc default && exec tail-syslog
+wait "${pid}"
