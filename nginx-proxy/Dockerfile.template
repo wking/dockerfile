@@ -37,5 +37,5 @@ ADD create-vhosts-from-environment.sh /usr/bin/create-vhosts-from-environment
 RUN sed -i 's/^\t#\([^ ]\)/\t\1/' /etc/nginx/nginx.conf
 RUN sed -i 's/listen 127.0.0.1:443;/listen 443 default_server;/' /etc/nginx/nginx.conf
 
-CMD create-vhosts-from-environment && rc default && tail -F /var/log/messages
+CMD create-vhosts-from-environment && rc default && exec tail-syslog
 EXPOSE 443

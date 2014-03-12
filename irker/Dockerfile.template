@@ -53,5 +53,4 @@ RUN sed -i 's/\(start-stop-daemon --stop --quiet\)/\1 --pidfile ${pidfile}/' /et
 RUN sed -i 's/#IRKERD_OPTS=""/IRKERD_OPTS="--host 0.0.0.0 --syslog"/' /etc/conf.d/irkerd
 RUN rc-update add irkerd default
 
-CMD rc default && tail -F /var/log/messages
 EXPOSE 6659

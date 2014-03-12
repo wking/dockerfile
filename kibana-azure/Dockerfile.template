@@ -29,5 +29,5 @@ RUN wget https://github.com/wking/kibana/raw/azure-release/kibana-latest.tar.gz
 RUN tar -xvf kibana-latest.tar.gz --strip-components 1 -C /var/www/localhost/htdocs
 RUN sed -i 's|"http://"+window.location.hostname+":9200"|"ELASTICSEARCH_URL"|' /var/www/localhost/htdocs/config.js
 
-CMD sed -i "s|ELASTICSEARCH_URL|${ELASTICSEARCH_URL}|" /var/www/localhost/htdocs/config.js && rc default && tail -F /var/log/messages
+CMD sed -i "s|ELASTICSEARCH_URL|${ELASTICSEARCH_URL}|" /var/www/localhost/htdocs/config.js && rc default && exec tail-syslog
 EXPOSE 80

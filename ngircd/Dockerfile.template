@@ -45,5 +45,5 @@ RUN sed -i 's/Info = Server Info Text/Info = ${INFO}/' /etc/ngircd/ngircd.conf
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
-CMD setup-ngircd-config-from-environment && rc default && tail -F /var/log/messages
+CMD setup-ngircd-config-from-environment && rc default && exec tail-syslog
 EXPOSE 6667

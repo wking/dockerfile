@@ -43,6 +43,5 @@ RUN mv /var/lib/buildmaster/master.cfg.sample /var/lib/buildmaster/master.cfg
 RUN buildslave create-slave /var/lib/buildslave localhost:9989 example-slave pass
 RUN chown -R buildbot:buildbot /var/lib/buildmaster /var/lib/buildslave
 
-CMD rc default && tail -F /var/log/messages
 EXPOSE 8010
 EXPOSE 9989

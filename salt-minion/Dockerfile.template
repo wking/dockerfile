@@ -64,5 +64,4 @@ RUN sed -i 's|^\(#log_level_logfile:.*\)$|\1\nlog_level_logfile: info|' /etc/sal
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
-CMD rc default && tail -F /var/log/messages
 EXPOSE 80

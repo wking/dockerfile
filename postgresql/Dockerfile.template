@@ -41,5 +41,4 @@ RUN sed -i "s/\(#log_destination =.*\)/log_destination = 'syslog'\n\1/" /etc/pos
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
-CMD rc default && tail -F /var/log/messages
 EXPOSE 5432

@@ -40,5 +40,4 @@ Run echo 'PC_GROUP="root"' >> /etc/conf.d/package-cache
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
-CMD rc default && tail -F /var/log/messages
 EXPOSE 80
