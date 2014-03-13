@@ -54,11 +54,11 @@ REPOS="${REPOS:-
 	elasticsearch
 	hubot
 	irker
-	kibana
-	kibana-azure
 	memcached
 	nginx
 	nginx-proxy
+	kibana
+	kibana-azure
 	ngircd
 	package-cache
 	postgresql
