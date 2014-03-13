@@ -39,6 +39,9 @@ RUN echo '=dev-python/pycryptopp-0.6.0 ~amd64' >> /etc/portage/package.accept_ke
 # required by app-admin/salt-0.17.4-r2
 # required by app-admin/salt (argument)
 RUN echo '=dev-python/msgpack-0.4.0 ~amd64' >> /etc/portage/package.accept_keywords/salt
+# required by app-admin/salt-9999
+# required by =app-admin/salt-9999 (argument)
+Run echo '=dev-python/libcloud-0.14.1 ~amd64' >> /etc/portage/package.accept_keywords/salt
 # required by dev-python/git-python-0.3.2_rc1-r1
 # required by dev-python/git-python (argument)
 RUN echo '=dev-python/gitdb-0.5.4-r1 ~amd64' >> /etc/portage/package.accept_keywords/salt
