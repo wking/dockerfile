@@ -6,8 +6,7 @@
 
 # required by dev-python/flask-0.10.1-r1
 # required by dev-python/flask (argument)
-=dev-python/itsdangerous-0.23 ~amd64
-=dev-python/blinker-1.3 ~amd64
+=dev-python/itsdangerous-0.24 ~amd64
 
 # required by dev-python/backports-lzma (argument)
 =dev-python/backports-lzma-0.0.2-r1 ~amd64
@@ -16,39 +15,40 @@
 # required by dev-python/backports-lzma (argument)
 =dev-python/backports-1.0 ~amd64
 
+# required by dev-python/blinker (argument)
+=dev-python/blinker-1.3 ~amd64
+
 # required by dev-python/python-glanceclient (argument)
 =dev-python/python-glanceclient-0.12.0 ~amd64
 
 # required by dev-python/python-glanceclient-0.12.0
 # required by dev-python/python-glanceclient (argument)
-=dev-python/python-keystoneclient-0.4.1 ~amd64
+=dev-python/python-keystoneclient-0.7.1 ~amd64
 =dev-python/warlock-1.0.1 ~amd64
 
 # required by dev-python/warlock-1.0.1
 # required by dev-python/python-glanceclient-0.12.0
 # required by dev-python/python-glanceclient (argument)
-=dev-python/jsonpatch-0.12 ~amd64
+=dev-python/jsonpatch-1.5 ~amd64
 =dev-python/jsonschema-2.3.0 ~amd64
 
-# required by dev-python/jsonpatch-0.12
+# required by dev-python/jsonpatch-1.5
 # required by dev-python/warlock-1.0.1
 # required by dev-python/python-glanceclient-0.12.0
 # required by dev-python/python-glanceclient (argument)
-=dev-python/jsonpointer-0.7 ~amd64
+=dev-python/jsonpointer-1.3 ~amd64
 
-# required by dev-python/python-keystoneclient-0.4.1
+# required by dev-python/python-keystoneclient-0.7.1
 # required by dev-python/python-glanceclient-0.12.0
 # required by dev-python/python-glanceclient (argument)
-=dev-python/iso8601-0.1.8 ~amd64
+=dev-python/iso8601-0.1.10 ~amd64
 =dev-python/oslo-config-1.2.1 ~amd64
-=dev-python/netaddr-0.7.10_p20130801 ~amd64
-=dev-python/pbr-0.5.23-r1 ~amd64
-=dev-python/prettytable-0.7.1-r1 ~amd64
-=dev-python/six-1.5.2 ~amd64
+=dev-python/pbr-0.7.0 ~amd64
+=dev-python/six-1.6.1 ~amd64
 
 # required by dev-python/python-swiftclient (argument)
-=dev-python/python-swiftclient-1.8.0 ~amd64
+=dev-python/python-swiftclient-1.9.0 ~amd64
 
-# required by dev-python/python-swiftclient-1.8.0
+# required by dev-python/python-swiftclient-1.9.0
 # required by dev-python/python-swiftclient (argument)
 =dev-python/d2to1-0.2.11 ~amd64
