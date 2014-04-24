@@ -38,7 +38,7 @@ RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\1  "githubot": "0.4.x",
 RUN sed -i 's/\]$/,\n "github-commits.coffee"]/' hubot/hubot-scripts.json
 RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "url": "",/' hubot/package.json
 RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "querystring": "",/' hubot/package.json
-RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "gitio": "1.0.1",/' hubot/package.json
+RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "gitio2": "2.0.0",/' hubot/package.json
 
 RUN sed -i 's/\]$/,\n "github-issue-link.coffee"]/' hubot/hubot-scripts.json
 #RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "githubot": "0.4.x",/' hubot/package.json
