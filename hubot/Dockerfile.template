@@ -52,9 +52,18 @@ RUN sed -i 's/\]$/,\n "github-pull-request-notifier.coffee"]/' hubot/hubot-scrip
 #RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "url": "",/' hubot/package.json
 #RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "querystring": "",/' hubot/package.json
 
+RUN sed -i 's/\]$/,\n "logger.coffee"]/' hubot/hubot-scripts.json
+#RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "redis": ">=0.7.2",/' hubot/package.json
+RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "moment": ">=1.7.0",/' hubot/package.json
+RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "connect": ">=2.4.5",/' hubot/package.json
+RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "connect_router": "*",/' hubot/package.json
+
 RUN cd hubot && npm install
+RUN git clone git://github.com/jenrzzz/hubot-logger.git && cp hubot-logger/logger.coffee hubot/node_modules/hubot-scripts/src/scripts/
 
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
-CMD cd hubot && REDISCLOUD_URL="${REDIS_PORT}" exec bin/hubot --name "${HUBOT_IRC_NICK:-hubot}" -a irc
+CMD cd hubot && REDISCLOUD_URL="${REDIS_PORT}" LOG_REDIS_URL="${REDIS_PORT}" PORT=80 exec bin/hubot --name "${HUBOT_IRC_NICK:-hubot}" -a irc
+EXPOSE 80
+EXPOSE 8000

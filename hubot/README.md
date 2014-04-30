@@ -6,6 +6,7 @@ number of [scripts][] installed out of the box:
 * [github-issue-link][]
 * [github-issues][]
 * [github-pull-request-notifier][]
+* [github-logger][]
 
 It's also easy to [write your own scripts][scripting].
 
@@ -20,7 +21,12 @@ Run this [hubot][] image with:
     >   -e HUBOT_IRC_UNFLOOD="200" \
     >   -e HUBOT_GITHUB_USER="github" \
     >   -e HUBOT_GITHUB_REPO="github/hubot" \
+    >   -e LOG_HTTP_USER="logs" \
+    >   -e LOG_HTTP_PASS="changme" \
+    >   -e LOG_HTTP_PORT=8000" \
     >   --link redis-0:redis \
+    >   -p 80:80 \
+    >   -p 8000:8000 \
     >   wking/hubot
 
 If your IRC server requires a server-wide password, you can set
@@ -45,6 +51,7 @@ with `HUBOT_LOG_LEVEL=debug` (see [robot.coffee][]).
 [github-issue-link]: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-issue-link.coffee
 [github-issues]: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-issues.coffee
 [github-pull-request-notifier]: https://github.com/github/hubot-scripts/blob/master/src/scripts/github-pull-request-notifier.coffee
+[github-logger]: https://github.com/jenrzzz/hubot-logger
 [scripting]: https://github.com/github/hubot/blob/master/docs/scripting.md
 [link]: http://docs.docker.io/en/latest/use/port_redirection/#linking-a-container
 [redis-brain]: https://github.com/github/hubot-scripts/blob/master/src/scripts/redis-brain.coffee
