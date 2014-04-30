@@ -64,6 +64,6 @@ RUN git clone git://github.com/jenrzzz/hubot-logger.git && cp hubot-logger/logge
 # Container networking happens automatically
 RUN sed -i 's/need net$/use net/' /etc/init.d/*
 
-CMD cd hubot && REDISCLOUD_URL="${REDIS_PORT}" LOG_REDIS_URL="${REDIS_PORT}" PORT=80 exec bin/hubot --name "${HUBOT_IRC_NICK:-hubot}" -a irc
+CMD cd hubot && REDIS_URL="${REDIS_PORT}" LOG_REDIS_URL="${REDIS_PORT}" PORT=80 exec bin/hubot --name "${HUBOT_IRC_NICK:-hubot}" -a irc
 EXPOSE 80
 EXPOSE 8000
