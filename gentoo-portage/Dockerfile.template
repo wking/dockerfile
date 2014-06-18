@@ -30,5 +30,4 @@ RUN echo 'GENTOO_MIRRORS="http://distfiles.gentoo.org/"' >> /etc/portage/make.co
 RUN mkdir -p /usr/portage
 RUN chown -R portage:portage /usr/portage
 RUN emerge-webrsync
-RUN emerge --sync --quiet
 RUN eselect news read new
