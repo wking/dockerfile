@@ -29,5 +29,5 @@ RUN echo 'GENTOO_MIRRORS="http://distfiles.gentoo.org/"' >> /etc/portage/make.co
 #RUN echo 'SYNC="rsync://rsync.us.gentoo.org"' >> /etc/portage/make.conf
 RUN mkdir -p /usr/portage
 RUN chown -R portage:portage /usr/portage
-RUN emerge-webrsync
+RUN emerge-webrsync --revert=${TAG}
 RUN eselect news read new
