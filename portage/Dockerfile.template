@@ -1,4 +1,4 @@
-# Copyright (C) 2013 W. Trevor King <wking@tremily.us>
+# Copyright (C) 2013-2014 W. Trevor King <wking@tremily.us>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -28,10 +28,7 @@ MAINTAINER ${MAINTAINER}
 # -volumes-from doesn't map names, so we need to shift /portage to
 #  /usr/portage.  Add a statically-linked BusyBox for RUN commands.
 ADD busybox /bin/sh
-ENTRYPOINT ["/bin/sh"]
 RUN mkdir /usr/
 RUN mv /portage /usr/portage
 VOLUME ["/usr/portage"]
-
-# We need a dummy process for this container
-CMD ["tail", "-f", "/portage/profiles/repo_name"]
+CMD sh
