@@ -33,6 +33,12 @@ ADD tail-syslog.sh /usr/bin/tail-syslog
 # Disable logging to tty12
 RUN sed -i 's/^\([^#].*console_all.*\)/#\1/' /etc/syslog-ng/syslog-ng.conf
 
+# Disable the system source (/proc/kmsg)
+RUN sed -i 's/^\(.*\)system(); \(.*\)/\1\2/' /etc/syslog-ng/syslog-ng.conf
+
+# Enable /dev/log
+RUN sed -i 's|^\(.* internal();\)\(.*\)|\1 unix-stream("/dev/log");\2|' /etc/syslog-ng/syslog-ng.conf
+
 # Log boot process to /var/log/rc.log
 RUN sed -i 's/^#\(rc_logger="YES"\)$/\1/' /etc/rc.conf
 
