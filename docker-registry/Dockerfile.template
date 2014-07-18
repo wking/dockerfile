@@ -30,7 +30,7 @@ RUN echo 'PYTHON_TARGETS="python2_7"' >> /etc/portage/make.conf
 RUN echo 'PYTHON_SINGLE_TARGET="python2_7"' >> /etc/portage/make.conf
 RUN echo 'USE_PYTHON="2.7"' >> /etc/portage/make.conf
 ADD package.accept_keywords /etc/portage/package.accept_keywords
-RUN emerge -v dev-python/blinker dev-python/boto dev-python/backports-lzma dev-python/flask dev-python/gevent dev-python/pyopenssl dev-python/python-glanceclient dev-python/python-keystoneclient dev-python/python-swiftclient dev-python/pyyaml dev-python/redis-py dev-python/requests dev-python/rsa dev-python/simplejson dev-python/sqlalchemy dev-vcs/git www-servers/gunicorn
+RUN emerge -v dev-python/blinker dev-python/boto dev-python/backports-lzma dev-python/flask dev-python/gevent dev-python/pyyaml dev-python/redis-py dev-python/requests dev-python/rsa dev-python/simplejson dev-python/sqlalchemy dev-vcs/git www-servers/gunicorn
 RUN eselect news read new
 RUN git clone git://github.com/dotcloud/docker-registry.git
 RUN cp --no-clobber docker-registry/config/config_sample.yml docker-registry/config/config.yml
