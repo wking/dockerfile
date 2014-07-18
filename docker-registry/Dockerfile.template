@@ -35,5 +35,11 @@ RUN eselect news read new
 RUN git clone git://github.com/dotcloud/docker-registry.git
 RUN cp --no-clobber docker-registry/config/config_sample.yml docker-registry/config/config.yml
 
-CMD cd docker-registry && ./setup-configs.sh && ./run.sh --preload
+# Disable strict dependencies (see dotcloud/docker-registry#466)
+RUN sed -i 's/\(install_requires=\)/#\1/' docker-registry/setup.py docker-registry/depends/docker-registry-core/setup.py
+
+RUN cd docker-registry/depends/docker-registry-core/ && python setup.py install
+RUN cd docker-registry && python setup.py install
+
+CMD exec docker-registry
 EXPOSE 5000
