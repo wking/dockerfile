@@ -24,7 +24,6 @@
 
 FROM ${NAMESPACE}/gentoo:${TAG}
 MAINTAINER ${MAINTAINER}
-RUN sed -i 's/#rc_sys=""/rc_sys="lxc"/g' /etc/rc.conf
 RUN echo 'GENTOO_MIRRORS="http://distfiles.gentoo.org/"' >> /etc/portage/make.conf
 #RUN echo 'SYNC="rsync://rsync.us.gentoo.org"' >> /etc/portage/make.conf
 RUN mkdir -p /usr/portage

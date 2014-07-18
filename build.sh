@@ -45,6 +45,7 @@ REPOS="${REPOS:-
 	gentoo-portage
 	gentoo-utc
 	gentoo-en-us
+	gentoo-openrc
 	gentoo-syslog
 	gentoo-java
 	gentoo-layman

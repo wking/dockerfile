@@ -1,4 +1,4 @@
-# Copyright (C) 2013-2014 W. Trevor King <wking@tremily.us>
+# Copyright (C) 2014 W. Trevor King <wking@tremily.us>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,21 +22,15 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM ${NAMESPACE}/gentoo-openrc:${TAG}
+FROM ${NAMESPACE}/gentoo-portage:${TAG}
 MAINTAINER ${MAINTAINER}
-#VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
-RUN emerge -v sys-process/vixie-cron app-admin/syslog-ng app-admin/logrotate
-RUN rc-update add syslog-ng default
-RUN rc-update add vixie-cron default
-ADD tail-syslog.sh /usr/bin/tail-syslog
 
-# Disable logging to tty12
-RUN sed -i 's/^\([^#].*console_all.*\)/#\1/' /etc/syslog-ng/syslog-ng.conf
+RUN sed -i 's/#rc_sys=""/rc_sys="lxc"/g' /etc/rc.conf
 
-# Disable the system source (/proc/kmsg)
-RUN sed -i 's/^\(.*\)system(); \(.*\)/\1\2/' /etc/syslog-ng/syslog-ng.conf
+# Networking is setup by Docker
+RUN echo 'rc_provide="loopback net"' >> /etc/rc.conf
+RUN rc-update delete loopback boot
+RUN rc-update delete netmount default
 
-# Enable /dev/log
-RUN sed -i 's|^\(.* internal();\)\(.*\)|\1 unix-stream("/dev/log");\2|' /etc/syslog-ng/syslog-ng.conf
-
-CMD rc default && exec tail-syslog
+# Log boot process to /var/log/rc.log
+RUN sed -i 's/^#\(rc_logger="YES"\)$/\1/' /etc/rc.conf
