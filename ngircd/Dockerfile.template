@@ -42,8 +42,5 @@ RUN sed -i 's/;AdminInfo2 = Location/AdminInfo2 = ${LOCATION}/' /etc/ngircd/ngir
 RUN sed -i 's/;AdminEMail = admin@irc.server/AdminEMail = ${EMAIL}/' /etc/ngircd/ngircd.conf
 RUN sed -i 's/Info = Server Info Text/Info = ${INFO}/' /etc/ngircd/ngircd.conf
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 CMD setup-ngircd-config-from-environment && rc default && exec tail-syslog
 EXPOSE 6667

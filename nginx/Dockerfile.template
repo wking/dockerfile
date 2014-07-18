@@ -35,7 +35,4 @@ RUN sed -i 's/listen 127.0.0.1;/listen 80 default_server;/' /etc/nginx/nginx.con
 RUN sed -i 's/server_name localhost;/server_name _;/' /etc/nginx/nginx.conf
 RUN mkdir /var/www/localhost/htdocs
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 EXPOSE 80

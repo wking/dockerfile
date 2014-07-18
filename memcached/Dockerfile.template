@@ -29,8 +29,5 @@ RUN emerge -v net-misc/memcached
 RUN eselect news read new
 RUN rc-update add memcached default
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 CMD sed -i "s/^MEMUSAGE=.*/MEMUSAGE=\"${MEMUSAGE}\"/" /etc/conf.d/memcached && rc default && exec tail-syslog
 EXPOSE 11211

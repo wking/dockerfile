@@ -35,8 +35,5 @@ RUN eselect news read new
 RUN git clone git://github.com/dotcloud/docker-registry.git
 RUN cp --no-clobber docker-registry/config/config_sample.yml docker-registry/config/config.yml
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 CMD cd docker-registry && ./setup-configs.sh && ./run.sh --preload
 EXPOSE 5000

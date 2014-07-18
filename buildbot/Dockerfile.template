@@ -35,9 +35,6 @@ RUN eselect news read new
 RUN rc-update add buildmaster default
 RUN rc-update add buildslave default
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 RUN buildbot create-master /var/lib/buildmaster
 RUN mv /var/lib/buildmaster/master.cfg.sample /var/lib/buildmaster/master.cfg
 RUN buildslave create-slave /var/lib/buildslave localhost:9989 example-slave pass

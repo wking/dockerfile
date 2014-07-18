@@ -36,8 +36,5 @@ RUN echo '[stunnel]' >> /etc/stunnel/stunnel.conf
 RUN echo 'accept = 9999' >> /etc/stunnel/stunnel.conf
 RUN echo 'connect = NETLOC' >> /etc/stunnel/stunnel.conf
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 CMD sed -i "s|NETLOC|${SERVER_PORT#tcp://}|" /etc/stunnel/stunnel.conf && rc default && exec tail-syslog
 EXPOSE 9999

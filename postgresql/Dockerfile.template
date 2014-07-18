@@ -38,7 +38,4 @@ RUN echo host  all  all  0.0.0.0/0  trust >> $(echo /etc/postgresql*/pg_hba.conf
 # Setup logging
 RUN sed -i "s/\(#log_destination =.*\)/log_destination = 'syslog'\n\1/" /etc/postgresql*/postgresql.conf
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 EXPOSE 5432

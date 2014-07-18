@@ -37,7 +37,4 @@ RUN echo 'PC_OPTS="-vvv"' >> /etc/conf.d/package-cache
 Run echo 'PC_USER="root"' >> /etc/conf.d/package-cache
 Run echo 'PC_GROUP="root"' >> /etc/conf.d/package-cache
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 EXPOSE 80

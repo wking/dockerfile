@@ -64,7 +64,4 @@ RUN sed -i 's|^\([[:space:]]*\)\(need net\)$|\1\2\n\1need logger|' /etc/init.d/s
 RUN sed -i 's|^#\(log_file: file:///dev/log\)|\1|' /etc/salt/minion
 RUN sed -i 's|^\(#log_level_logfile:.*\)$|\1\nlog_level_logfile: info|' /etc/salt/minion
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 EXPOSE 80

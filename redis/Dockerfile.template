@@ -32,9 +32,6 @@ RUN rc-update add redis default
 # Bind to all interfaces
 RUN sed -i 's/bind /#bind /' /etc/redis.conf
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 # A configurable environment variable (e.g. CONFIG_URL) would be nice.
 # Until then, hardcode the tweaks I need.
 RUN sed -i 's/\(# maxmemory-policy.*\)/\1\nmaxmemory-policy allkeys-lru/' /etc/redis.conf

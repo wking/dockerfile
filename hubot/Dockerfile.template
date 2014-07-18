@@ -61,9 +61,6 @@ RUN sed -i 's/\([[:space:]]*\)\("dependencies": {\)/\1\2\n\1  "connect_router": 
 RUN cd hubot && npm install
 RUN git clone git://github.com/jenrzzz/hubot-logger.git && cp hubot-logger/logger.coffee hubot/node_modules/hubot-scripts/src/scripts/
 
-# Container networking happens automatically
-RUN sed -i 's/need net$/use net/' /etc/init.d/*
-
 CMD cd hubot && REDIS_URL="${REDIS_PORT}" LOG_REDIS_URL="${REDIS_PORT}" PORT=80 exec bin/hubot --name "${HUBOT_IRC_NICK:-hubot}" -a irc
 EXPOSE 80
 EXPOSE 8000
