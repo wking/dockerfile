@@ -49,14 +49,12 @@ trim()
 	#sys-apps/openrc     (/sbin/rc)
 	#sys-apps/net-tools  (/bin/hostname)
 	#sys-devel/gettext   (/usr/bin/envsubst)
-	# unmerge GCC to break the GCC <-> libc dependency loop
 	docker run -t --name "${CONTAINER}" \
 		-v "${PWD}/empty-system.py:/tmp/empty-system.py" \
 		"${IMAGE}" /bin/bash -c "
 			/tmp/empty-system.py &&
 			emerge --noreplace app-shells/bash sys-apps/net-tools sys-apps/openrc sys-devel/gettext &&
-			emerge --unmerge sys-devel/gcc &&
-			emerge -v --depclean &&
+			emerge -v --with-bdeps=n --depclean &&
 			rm -rf /usr/portage" ||
 		die "failed to create ${CONTAINER}"
 	docker export "${CONTAINER}" | docker import - "${IMG}" ||
