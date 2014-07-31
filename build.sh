@@ -26,7 +26,7 @@
 
 AUTHOR="${AUTHOR:-W. Trevor King <wking@tremily.us>}"
 NAMESPACE="${NAMESPACE:-wking}"
-DATE="${DATE:-20140717}"
+DATE="${DATE:-20140724}"
 MIRROR="${MIRROR:-http://distfiles.gentoo.org/}"
 ARCH_URL="${ARCH_URL:-${MIRROR}releases/amd64/autobuilds/${DATE}/}"
 STAGE3="${STAGE3:-stage3-amd64-${DATE}.tar.bz2}"
