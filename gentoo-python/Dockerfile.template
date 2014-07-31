@@ -1,4 +1,4 @@
-# Copyright (C) 2013-2014 W. Trevor King <wking@tremily.us>
+# Copyright (C) 2014 W. Trevor King <wking@tremily.us>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -22,8 +22,13 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM ${NAMESPACE}/gentoo-python:${TAG}
+FROM ${NAMESPACE}/gentoo-portage:${TAG}
 MAINTAINER ${MAINTAINER}
 #VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
-RUN echo 'UTC' > /etc/timezone
-RUN emerge --config sys-libs/timezone-data
+RUN PYTHON_TARGETS=$(emerge --info | sed -n 's/.*PYTHON_TARGETS="\([^"]*\)".*/\1/p') && \
+	PYTHON_TARGET="${PYTHON_TARGETS##* }" && \
+	echo "PYTHON_TARGETS=\"${PYTHON_TARGET}\"" >> /etc/portage/make.conf && \
+	echo "PYTHON_SINGLE_TARGET=\"${PYTHON_TARGET}\"" >> /etc/portage/make.conf
+RUN eselect python set $(eselect python show --python3)
+RUN emerge --newuse --deep --with-bdeps=y @system
+RUN emerge --depclean
