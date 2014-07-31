@@ -53,7 +53,7 @@ trim()
 		-v "${PWD}/empty-system.py:/tmp/empty-system.py" \
 		"${IMAGE}" /bin/bash -c "
 			/tmp/empty-system.py &&
-			emerge --noreplace app-shells/bash sys-apps/net-tools sys-apps/openrc sys-devel/gettext &&
+			emerge --noreplace app-shells/bash sys-apps/findutils sys-apps/net-tools sys-apps/openrc sys-devel/gettext virtual/package-manager &&
 			emerge -v --with-bdeps=n --depclean &&
 			rm -rf /usr/portage" ||
 		die "failed to create ${CONTAINER}"
