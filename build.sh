@@ -125,7 +125,8 @@ import_stage3()
 			fi
 		done
 
-		gpg --verify "downloads/${STAGE3_DIGESTS}" || die "insecure digests"
+		gpg --verify "downloads/${STAGE3_DIGESTS}" ||
+			die "insecure digests for gentoo"
 		SHA512_HASHES=$(grep -A1 SHA512 "downloads/${STAGE3_DIGESTS}" | grep -v '^--')
 		SHA512_CHECK=$(cd downloads/ && (echo "${SHA512_HASHES}" | sha512sum -c))
 		SHA512_FAILED=$(echo "${SHA512_CHECK}" | grep FAILED)
@@ -134,11 +135,13 @@ import_stage3()
 		fi
 
 		msg "import ${NAMESPACE}/gentoo:${DATE}"
-		"${DOCKER}" import - "${NAMESPACE}/gentoo:${DATE}" < "downloads/${STAGE3}" || die "failed to import"
+		"${DOCKER}" import - "${NAMESPACE}/gentoo:${DATE}" < "downloads/${STAGE3}" ||
+			die "failed to import gentoo"
 	fi
 
 	msg "tag ${NAMESPACE}/gentoo:latest"
-	"${DOCKER}" tag -f "${NAMESPACE}/gentoo:${DATE}" "${NAMESPACE}/gentoo:latest" || die "failed to tag"
+	"${DOCKER}" tag -f "${NAMESPACE}/gentoo:${DATE}" "${NAMESPACE}/gentoo:latest" ||
+			die "failed to tag gentoo"
 }
 
 # If they don't already exist:
@@ -160,14 +163,17 @@ import_portage()
 			fi
 		done
 
-		gpg --verify "downloads/${PORTAGE_SIG}" "downloads/${PORTAGE}" || die "insecure digests"
+		gpg --verify "downloads/${PORTAGE_SIG}" "downloads/${PORTAGE}" ||
+			die "insecure digests for portage-import"
 
 		msg "import ${NAMESPACE}/portage-import:${DATE}"
-		"${DOCKER}" import - "${NAMESPACE}/portage-import:${DATE}" < "downloads/${PORTAGE}" || die "failed to import"
+		"${DOCKER}" import - "${NAMESPACE}/portage-import:${DATE}" < "downloads/${PORTAGE}" ||
+			die "failed to import portage-import"
 	fi
 
 	msg "tag ${NAMESPACE}/portage-import:latest"
-	"${DOCKER}" tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" || die "failed to tag"
+	"${DOCKER}" tag -f "${NAMESPACE}/portage-import:${DATE}" "${NAMESPACE}/portage-import:latest" ||
+		die "failed to tag portage-import"
 }
 
 # extract Busybox for the portage image
@@ -216,10 +222,12 @@ build_repo()
 				< "${REPO}/Dockerfile.template" > "${REPO}/Dockerfile"
 
 		msg "build ${NAMESPACE}/${REPO}:${DATE}"
-		"${DOCKER}" build ${BUILD_OPTS} -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" || die "failed to build"
+		"${DOCKER}" build ${BUILD_OPTS} -t "${NAMESPACE}/${REPO}:${DATE}" "${REPO}" ||
+			die "failed to build ${REPO}"
 	fi
 	msg "tag ${NAMESPACE}/${REPO}:latest"
-	"${DOCKER}" tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" || die "failed to tag"
+	"${DOCKER}" tag -f "${NAMESPACE}/${REPO}:${DATE}" "${NAMESPACE}/${REPO}:latest" ||
+			die "failed to tag ${REPO}"
 }
 
 build()
