@@ -4,7 +4,7 @@ Run this [Nginx][] image with:
 
 [volume-mounting][volume-mount] your content under the container's
 `/var/www/localhost/htdocs`.  You can also mount volumes from other
-containers and serve their data, although you may neet to tweak the
+containers and serve their data, although you may need to tweak the
 config to serve from an alternative location.  Adjusting this image to
 serve from a configurable `$HTTP_ROOT` wouldn't be too difficult
 either.
