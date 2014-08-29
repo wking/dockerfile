@@ -30,3 +30,5 @@ RUN echo en_US.UTF-8 UTF-8 >> /etc/locale.gen
 RUN locale-gen
 RUN echo 'LANG="en_US.UTF-8"' >> /etc/env.d/02locale
 RUN env-update
+RUN echo 'LINGUAS="en en_US"' >> /etc/portage/make.conf
+RUN emerge -v --newuse --deep --with-bdeps=y @system @world
