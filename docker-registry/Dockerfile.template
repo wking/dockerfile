@@ -22,7 +22,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM ${NAMESPACE}/gentoo-syslog:${TAG}
+FROM ${NAMESPACE}/gentoo-layman:${TAG}
 MAINTAINER ${MAINTAINER}
 #VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
 RUN echo 'USE="${USE} sqlite"' >> /etc/portage/make.conf
@@ -31,8 +31,9 @@ RUN sed -i 's/\(PYTHON_SINGLE_TARGET\)=.*/\1="python2_7"/' /etc/portage/make.con
 RUN echo 'USE_PYTHON="2.7"' >> /etc/portage/make.conf
 RUN emerge -v --newuse --deep --with-bdeps=y @system @world
 RUN eselect python set $(eselect python show --python2)
-ADD package.accept_keywords /etc/portage/package.accept_keywords
-RUN emerge -v dev-python/blinker dev-python/boto dev-python/backports-lzma dev-python/flask dev-python/gevent dev-python/pyyaml dev-python/redis-py dev-python/requests dev-python/rsa dev-python/simplejson dev-python/sqlalchemy dev-vcs/git www-servers/gunicorn
+ADD package.accept_keywords /etc/portage/package.accept_keywords/docker-registry
+RUN layman -a wtk
+RUN emerge -v dev-python/blinker dev-python/boto dev-python/backports-lzma dev-python/flask dev-python/flask-cors dev-python/gevent dev-python/pyyaml dev-python/redis-py dev-python/requests dev-python/rsa dev-python/simplejson dev-python/sqlalchemy dev-vcs/git www-servers/gunicorn
 RUN eselect news read new
 RUN git clone git://github.com/dotcloud/docker-registry.git
 RUN cp --no-clobber docker-registry/config/config_sample.yml docker-registry/config/config.yml
