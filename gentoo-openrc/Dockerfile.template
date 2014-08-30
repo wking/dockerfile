@@ -25,6 +25,7 @@
 FROM ${NAMESPACE}/gentoo-portage:${TAG}
 MAINTAINER ${MAINTAINER}
 
+RUN emerge --noreplace sys-apps/openrc
 RUN sed -i 's/#rc_sys=""/rc_sys="lxc"/g' /etc/rc.conf
 
 # Networking is setup by Docker
