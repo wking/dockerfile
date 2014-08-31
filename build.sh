@@ -43,6 +43,7 @@ BUILD_OPTS="${BUILD_OPTS:-}"
 REPOS="${REPOS:-
 	portage
 	gentoo-portage
+	gentoo-python
 	gentoo-utc
 	gentoo-en-us
 	gentoo-openrc
