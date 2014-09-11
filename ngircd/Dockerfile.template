@@ -35,7 +35,7 @@ RUN sed -i 's/;Listen = 127.0.0.1,192.168.0.1/Listen = ::,0.0.0.0/' /etc/ngircd/
 RUN sed -i 's/;PAM = yes/PAM = no/' /etc/ngircd/ngircd.conf
 RUN sed -i 's/;SyslogFacility = local1/SyslogFacility = daemon/' /etc/ngircd/ngircd.conf
 RUN sed -i 's|^\([[:space:]]*\)\(need net\)$|\1\2\n\1use logger|' /etc/init.d/ngircd
-ADD setup-ngircd-config-from-environment.sh /usr/bin/setup-ngircd-config-from-environment
+COPY setup-ngircd-config-from-environment.sh /usr/bin/setup-ngircd-config-from-environment
 RUN sed -i 's/Name = irc.example.net/Name = ${HOSTNAME}/' /etc/ngircd/ngircd.conf
 RUN sed -i 's/;AdminInfo1 = Description/AdminInfo1 = ${DESCRIPTION}/' /etc/ngircd/ngircd.conf
 RUN sed -i 's/;AdminInfo2 = Location/AdminInfo2 = ${LOCATION}/' /etc/ngircd/ngircd.conf

@@ -27,7 +27,7 @@ MAINTAINER ${MAINTAINER}
 
 # -volumes-from doesn't map names, so we need to shift /portage to
 #  /usr/portage.  Add a statically-linked BusyBox for RUN commands.
-ADD busybox /bin/sh
+COPY busybox /bin/sh
 RUN mkdir /usr/
 RUN mv /portage /usr/portage
 VOLUME ["/usr/portage"]

@@ -29,9 +29,9 @@ MAINTAINER ${MAINTAINER}
 RUN mkdir /etc/nginx/vhosts
 RUN chown nginx:nginx /etc/nginx/vhosts
 RUN sed -i 's|^\([[:space:]]*\)\(server {\)|\1include vhosts/*.conf;\n\n\1\2|' /etc/nginx/nginx.conf
-ADD vhost-template.conf /etc/nginx/vhosts/TEMPLATE
+COPY vhost-template.conf /etc/nginx/vhosts/TEMPLATE
 RUN chown nginx:nginx /etc/nginx/vhosts/TEMPLATE
-ADD create-vhosts-from-environment.sh /usr/bin/create-vhosts-from-environment
+COPY create-vhosts-from-environment.sh /usr/bin/create-vhosts-from-environment
 
 # Uncomment the default HTTPS server
 RUN sed -i 's/^\t#\([^ ]\)/\t\1/' /etc/nginx/nginx.conf
