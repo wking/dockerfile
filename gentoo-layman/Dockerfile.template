@@ -38,4 +38,5 @@ RUN echo 'dev-python/ssl-fetch ~amd64' >> /etc/portage/package.accept_keywords/l
 RUN emerge -v layman
 RUN eselect news read new
 RUN echo 'source /var/lib/layman/make.conf' >> /etc/portage/make.conf
+RUN sed -i 's/^check_official.*/check_official : no/' /etc/layman/layman.cfg
 RUN layman --fetch
