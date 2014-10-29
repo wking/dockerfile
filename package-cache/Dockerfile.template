@@ -26,7 +26,7 @@ FROM ${NAMESPACE}/gentoo-layman:${TAG}
 MAINTAINER ${MAINTAINER}
 #VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
 RUN layman --add wtk
-RUN echo '=net-proxy/package-cache-9999 ~amd64' >> /etc/portage/package.accept_keywords
+RUN echo '=net-proxy/package-cache-9999 ~amd64' >> /etc/portage/package.accept_keywords/package-cache
 RUN emerge -v net-proxy/package-cache
 RUN eselect news read new
 RUN rc-update add package-cache default
