@@ -67,6 +67,7 @@ REPOS="${REPOS:-
 	redis
 	salt-minion
 	stunnel
+	thumbor
 	}"
 
 die()

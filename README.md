@@ -40,6 +40,7 @@ The dependency graph is:
                             |-- redis  (adds Redis)
                             |-- salt-minion  (adds a Salt Stack minion)
                             |-- stunnel  (adds stunnel)
+                            |-- thumbor  (adds Thumbor)
                             `-- gentoo-java  (adds IcedTea)
                                 `-- elasticsearch  (adds Elasticsearch)
 
