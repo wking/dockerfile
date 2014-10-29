@@ -57,6 +57,7 @@ REPOS="${REPOS:-
 	hubot
 	irker
 	memcached
+	nagios
 	nginx
 	nginx-proxy
 	kibana

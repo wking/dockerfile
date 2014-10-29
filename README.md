@@ -31,6 +31,7 @@ The dependency graph is:
                             |   `-- hubot  (adds hubot with an IRC adapter)
                             |-- irker  (adds irker, and spawns irkerd by default)
                             |-- memcached  (adds Memcached)
+                            |-- nagios  (adds Nagios)
                             |-- nginx  (adds Nginx)
                             |   |-- nginx-proxy  (SSL/TLS proxying via SNI)
                             |   |-- kibana  (adds Kibana)

@@ -1,0 +1,95 @@
+#!/bin/sh
+#
+# Check a Redis list length (e.g. a Celery queue)
+#
+# Copyright (C) 2014 W. Trevor King <wking@tremily.us>
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+HOST='127.0.0.1'
+PORT='6379'
+LIST='default'
+WARNING='50'
+CRITICAL='100'
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+while [ "$#" -gt 0 ]
+do
+	case "$1" in
+		-h)
+			HOST="$2"
+			shift
+			;;
+		-p)
+			PORT="$2"
+			shift
+			;;
+		-l)
+			LIST="$2"
+			shift
+			;;
+		-w)
+			WARNING="$2"
+			shift
+			;;
+		-c)
+			CRITICAL="$2"
+			shift
+			;;
+		*)
+			echo "LIST UNKNOWN - unrecognized option: '$1'" >&2
+			exit "${STATE_UNKNOWN}"
+	esac
+	shift
+done
+
+LENGTH=$(redis-cli -h "${HOST}" -p "${PORT}" llen "${LIST}")
+REDIS_STATUS="$?"
+if [ "${REDIS_STATUS}" -eq 127 ]
+then
+	echo "LIST UNKNOWN - command not found (did you install redis-cli?)"
+  exit "${STATE_UNKNOWN}"
+elif [ "${REDIS_STATUS}" -ne 0 ]
+then
+	echo "LIST WARNING - redis-cli returned state ${REDIS_STATUS}"
+  exit "${STATE_WARNING}"
+fi
+
+STATUS='OK'
+EXIT="${STATE_OK}"
+if [ "${LENGTH}" -gt "${CRITICAL}" ]
+then
+	STATUS='CRITICAL'
+	EXIT="${STATE_CRITICAL}"
+elif [ "${LENGTH}" -gt "${WARNING}" ]
+then
+	STATUS='WARNING'
+	EXIT="${STATE_WARNING}"
+fi
+
+echo "LIST ${STATUS} - ${LIST} length: ${LENGTH}"
+exit "${EXIT}"
