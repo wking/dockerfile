@@ -5,10 +5,9 @@ Run this [package-cache][] image with:
 [volume-mounting][volume-mount] your content under the container's
 `/usr/portage`.  Then setup you host firewall to intercept outgoing
 connections to [distfiles.gentoo.org][] and redirect them to the
-package cacher.  Use [jq][] to extract the package-cache IP address:
+package cacher.  Get the package-cache IP address:
 
-    # CACHE_IP=$(docker inspect package-cache-0 |
-    > jq -r '.[0].NetworkSettings.IPAddress')
+    # CACHE_IP=$(docker -f '{{ .NetworkSettings.IPAddress }}' inspect package-cache-0)
 
 And add a destination address translation rule, using [dig][] to list
 IP addresses for the source:
@@ -34,5 +33,4 @@ for more details.
 [package-cache]: http://blog.tremily.us/posts/package-cache/
 [volume-mount]: http://docs.docker.io/en/latest/use/working_with_volumes/
 [distfiles.gentoo.org]: http://distfiles.gentoo.org/
-[jq]: http://stedolan.github.io/jq/
 [dig]: ftp://ftp.isc.org/isc/bind9/cur/9.9/doc/arm/man.dig.html
