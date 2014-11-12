@@ -46,6 +46,8 @@ RUN sed -i 's|\(authorized_for_configuration_information=.*\)|\1,guest|' /etc/na
 RUN sed -i 's|\(authorized_for_all_services=.*\)|\1,guest|' /etc/nagios/cgi.cfg
 RUN sed -i 's|\(authorized_for_all_hosts=.*\)|\1,guest|' /etc/nagios/cgi.cfg
 RUN sed -i 's|\(authorized_for_read_only=.*\)|\1,guest|' /etc/nagios/cgi.cfg
+ADD no-localhost-ssh.patch /usr/local/share/no-localhost-ssh.patch
+RUN patch -p1 < /usr/local/share/no-localhost-ssh.patch
 RUN mkdir /etc/nagios/cfg
 RUN chown nagios:nagios /etc/nagios/cfg
 RUN sed -i 's|\(#cfg_dir=/etc/nagios/routers.*\)|\1\ncfg_dir=/etc/nagios/cfg|' /etc/nagios/nagios.cfg

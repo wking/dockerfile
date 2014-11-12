@@ -1,0 +1,26 @@
+The Nagios Docker container won't have SSH access enabled.
+
+The irregularity in tabs vs. spaces occurs upstream.
+
+--- a/etc/nagios/objects/localhost.cfg
++++ b/etc/nagios/objects/localhost.cfg
+@@ -131,19 +131,6 @@
+ 
+ 
+ 
+-# Define a service to check SSH on the local machine.
+-# Disable notifications for this service by default, as not all users may have SSH enabled.
+-
+-define service{
+-        use                             local-service         ; Name of service template to use
+-        host_name                       localhost
+-        service_description             SSH
+-	check_command			check_ssh
+-	notifications_enabled		0
+-        }
+-
+-
+-
+ # Define a service to check HTTP on the local machine.
+ # Disable notifications for this service by default, as not all users may have HTTP enabled.
+ 
