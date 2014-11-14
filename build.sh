@@ -67,6 +67,7 @@ REPOS="${REPOS:-
 	postgresql
 	redis
 	salt
+	salt-master
 	salt-minion
 	stunnel
 	thumbor

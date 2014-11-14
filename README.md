@@ -40,6 +40,7 @@ The dependency graph is:
                             |-- postgresql  (adds PostgreSQL)
                             |-- redis  (adds Redis)
                             |-- salt  (adds a Salt Stack install)
+                            |   |-- salt-master  (enables a Salt Stack master)
                             |   `-- salt-minion  (enables a Salt Stack minion)
                             |-- stunnel  (adds stunnel)
                             |-- thumbor  (adds Thumbor)
