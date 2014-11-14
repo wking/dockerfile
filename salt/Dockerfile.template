@@ -22,17 +22,20 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-FROM ${NAMESPACE}/salt:${TAG}
+FROM ${NAMESPACE}/gentoo-syslog:${TAG}
 MAINTAINER ${MAINTAINER}
 #VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
 
-ADD package.accept_keywords /etc/portage/package.accept_keywords/salt-minion
-RUN emerge -v dev-python/git-python
+# Salt v2014.1.13 doesn't work with Python 3 (at least according to the ebuild)
+RUN sed -i 's/\(PYTHON_TARGETS\)=.*/\1="python2_7"/' /etc/portage/make.conf
+RUN sed -i 's/\(PYTHON_SINGLE_TARGET\)=.*/\1="python2_7"/' /etc/portage/make.conf
+RUN echo 'USE_PYTHON="2.7"' >> /etc/portage/make.conf
+RUN emerge -v --newuse --deep --with-bdeps=y @system @world
+
+RUN mkdir /etc/portage/package.accept_keywords
+RUN mkdir /etc/portage/package.use
+RUN echo 'app-admin/salt git' >> /etc/portage/package.use/salt
+ADD package.accept_keywords /etc/portage/package.accept_keywords/salt
+
+RUN salt_LIVE_COMMIT=v2014.1.13 emerge -v =app-admin/salt-9999
 RUN eselect news read new
-RUN rc-update add salt-minion default
-
-RUN sed -i 's|^\([[:space:]]*\)\(need net\)$|\1\2\n\1need logger|' /etc/init.d/salt-minion
-RUN sed -i 's|^#\(log_file: file:///dev/log\)|\1|' /etc/salt/minion
-RUN sed -i 's|^\(#log_level_logfile:.*\)$|\1\nlog_level_logfile: info|' /etc/salt/minion
-
-EXPOSE 80

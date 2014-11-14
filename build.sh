@@ -66,6 +66,7 @@ REPOS="${REPOS:-
 	package-cache
 	postgresql
 	redis
+	salt
 	salt-minion
 	stunnel
 	thumbor

@@ -1,0 +1,7 @@
+# required by =app-admin/salt-9999 (argument)
+=app-admin/salt-9999 **
+
+# required by app-admin/salt-9999
+# required by =app-admin/salt-9999 (argument)
+=dev-python/msgpack-0.4.2 ~amd64
+=dev-python/pycryptopp-0.6.0 ~amd64
