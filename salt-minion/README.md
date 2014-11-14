@@ -55,9 +55,9 @@ to [manually sync][sync_all] the minion:
 
     salt# salt salt-minion-0 saltutil.sync_all
 
-[salt]: http://saltstack.com/community.html
-[master-name]: http://docs.saltstack.com/ref/configuration/minion.html#master
-[preseed]: http://docs.saltstack.com/topics/tutorials/preseed_key.html
-[volume-mount]: http://docs.docker.io/en/latest/use/working_with_volumes/
-[auto-accept]: http://docs.saltstack.com/ref/configuration/master.html#auto-accept
-[sync_all]: http://docs.saltstack.com/ref/modules/all/salt.modules.saltutil.html#salt.modules.saltutil.sync_all
+[salt]: http://saltstack.com/community/
+[master-name]: http://docs.saltstack.com/en/latest/ref/configuration/minion.html#master
+[preseed]: http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
+[volume-mount]: http://docs.docker.com/userguide/dockervolumes/#mount-a-host-directory-as-a-data-volume
+[auto-accept]: http://docs.saltstack.com/en/latest/ref/configuration/master.html#auto-accept
+[sync_all]: http://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.saltutil.html#salt.modules.saltutil.sync_all
