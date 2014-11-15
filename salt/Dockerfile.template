@@ -31,6 +31,7 @@ RUN sed -i 's/\(PYTHON_TARGETS\)=.*/\1="python2_7"/' /etc/portage/make.conf
 RUN sed -i 's/\(PYTHON_SINGLE_TARGET\)=.*/\1="python2_7"/' /etc/portage/make.conf
 RUN echo 'USE_PYTHON="2.7"' >> /etc/portage/make.conf
 RUN emerge -v --newuse --deep --with-bdeps=y @system @world
+RUN eselect python set $(eselect python show --python2)
 
 RUN mkdir /etc/portage/package.accept_keywords
 RUN mkdir /etc/portage/package.use
