@@ -26,7 +26,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 AUTHOR="${AUTHOR:-W. Trevor King <wking@tremily.us>}"
-NAMESPACE="${NAMESPACE:-$(whoami)}"
+NAMESPACE="${NAMESPACE:-$(id -u -n)}"
 DATE="${DATE:-20141023}"
 MIRROR="${MIRROR:-http://distfiles.gentoo.org/}"
 ARCH_URL="${ARCH_URL:-${MIRROR}releases/amd64/autobuilds/${DATE}/}"
