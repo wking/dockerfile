@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # Copyright (C) 2013-2014 W. Trevor King <wking@tremily.us>
+# Copyright (C) 2014 Naohiro Aota <naota@gentoo.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -25,7 +26,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 AUTHOR="${AUTHOR:-W. Trevor King <wking@tremily.us>}"
-NAMESPACE="${NAMESPACE:-wking}"
+NAMESPACE="${NAMESPACE:-$(whoami)}"
 DATE="${DATE:-20141023}"
 MIRROR="${MIRROR:-http://distfiles.gentoo.org/}"
 ARCH_URL="${ARCH_URL:-${MIRROR}releases/amd64/autobuilds/${DATE}/}"
