@@ -34,7 +34,7 @@ RUN emerge -v --newuse --deep --with-bdeps=y @system @world
 RUN eselect python set $(eselect python show --python2)
 
 RUN mkdir /etc/portage/package.accept_keywords
-RUN mkdir /etc/portage/package.use
+RUN mkdir -p /etc/portage/package.use
 RUN echo 'app-admin/salt git' >> /etc/portage/package.use/salt
 ADD package.accept_keywords /etc/portage/package.accept_keywords/salt
 

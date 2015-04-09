@@ -27,7 +27,7 @@ MAINTAINER ${MAINTAINER}
 #VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
 
 RUN mkdir /etc/portage/package.accept_keywords
-RUN mkdir /etc/portage/package.use
+RUN mkdir -p /etc/portage/package.use
 # avoid a Python 2 dependency
 RUN echo 'dev-vcs/git -python' >> /etc/portage/package.use/layman
 RUN echo 'app-portage/layman ~amd64' >> /etc/portage/package.accept_keywords/layman
