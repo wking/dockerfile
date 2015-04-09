@@ -27,7 +27,7 @@
 MIRROR="${MIRROR:-http://distfiles.gentoo.org/}"
 BASE_ARCH_URL="${BASE_ARCH_URL:-${MIRROR}releases/amd64/autobuilds/}"
 LATEST=$(wget -O - "${BASE_ARCH_URL}latest-stage3.txt")
-DATE=$(echo "${LATEST}" | sed -n 's|/stage3-amd64-[0-9]*[.]tar[.]bz2||p')
+DATE=$(echo "${LATEST}" | sed -n 's|/stage3-amd64-[0-9]*[.]tar[.]bz2.*||p')
 ARCH_URL="${ARCH_URL:-${BASE_ARCH_URL}${DATE}/}"
 STAGE3="${STAGE3:-stage3-amd64-${DATE}.tar.bz2}"
 STAGE3_CONTENTS="${STAGE3_CONTENTS:-${STAGE3}.CONTENTS}"
