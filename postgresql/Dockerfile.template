@@ -25,10 +25,10 @@
 FROM ${NAMESPACE}/gentoo-syslog:${TAG}
 MAINTAINER ${MAINTAINER}
 #VOLUME ["${PORTAGE}:/usr/portage:ro", "${PORTAGE}/distfiles:/usr/portage/distfiles:rw"]
-RUN emerge -v dev-db/postgresql-server
+RUN emerge -v dev-db/postgresql
 RUN eselect news read new
 RUN rc-update add $(basename /etc/init.d/postgresql-*) default
-RUN yes | emerge --config dev-db/postgresql-server
+RUN yes | emerge --config dev-db/postgresql
 VOLUME ["/var/lib/postgresql"]
 
 # Expose PostgreSQL to external network connections
