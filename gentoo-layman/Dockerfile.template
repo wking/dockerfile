@@ -1,4 +1,4 @@
-# Copyright (C) 2013-2014 W. Trevor King <wking@tremily.us>
+# Copyright (C) 2013-2016 W. Trevor King <wking@tremily.us>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -37,6 +37,6 @@ RUN echo 'dev-python/ssl-fetch ~amd64' >> /etc/portage/package.accept_keywords/l
 
 RUN emerge -v layman
 RUN eselect news read new
-RUN echo 'source /var/lib/layman/make.conf' >> /etc/portage/make.conf
+RUN layman-updater --rebuild
 RUN sed -i 's/^check_official.*/check_official : no/' /etc/layman/layman.cfg
-RUN layman --fetch
+RUN layman --sync-all
