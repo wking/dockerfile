@@ -26,7 +26,8 @@ The dependency graph is:
                             |-- buildbot  (adds a Buildbot master and slave)
                             |-- docker-registry  (adds a Docker registry server)
                             |-- gentoo-layman  (adds layman for Gentoo overlays)
-                            |   `-- package-cache  (adds a package-cache proxy)
+                            |   |-- package-cache  (adds a package-cache proxy)
+                            |   `-- thumbor  (adds Thumbor)
                             |-- gentoo-node  (adds Node and npm)
                             |   `-- hubot  (adds hubot with an IRC adapter)
                             |-- irker  (adds irker, and spawns irkerd by default)
@@ -43,7 +44,6 @@ The dependency graph is:
                             |   |-- salt-master  (enables a Salt Stack master)
                             |   `-- salt-minion  (enables a Salt Stack minion)
                             |-- stunnel  (adds stunnel)
-                            |-- thumbor  (adds Thumbor)
                             `-- gentoo-java  (adds IcedTea)
                                 `-- elasticsearch  (adds Elasticsearch)
 

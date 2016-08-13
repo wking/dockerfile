@@ -34,7 +34,8 @@ RUN echo 'YES' | etc-update --automode -9
 RUN rm /etc/layman/._*
 RUN eselect python set $(eselect python show --python2)
 RUN echo 'USE="${USE} jpeg tiff truetype webp"' >> /etc/portage/make.conf
-RUN layman --add wtk
+RUN layman --overlays http://blog.tremily.us/posts/Gentoo_overlay/layman.xml --sync-all
+RUN layman --overlays http://blog.tremily.us/posts/Gentoo_overlay/layman.xml --add wtk
 COPY package.accept_keywords /etc/portage/package.accept_keywords/thumbor
 RUN emerge -v dev-python/thumbor
 RUN eselect news read new
